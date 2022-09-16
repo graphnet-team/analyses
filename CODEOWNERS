@@ -1,0 +1,10 @@
+# The convention below is in order of decreasing ownership.
+# Meaning the primary owner of the project is listed first.
+# Listed last is the lead for that particular sub-group.
+
+* @asogaard
+
+# Specific analyses
+upgrade_neutrino_reconstruction/ @asogaard
+upgrade_nmo_sensitivity/ @asogaard
+upgrade_noise/ @asogaard
