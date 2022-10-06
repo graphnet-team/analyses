@@ -8,3 +8,4 @@
 upgrade_neutrino_reconstruction/ @asogaard
 upgrade_nmo_sensitivity/ @asogaard
 upgrade_noise/ @asogaard
+Moon_Pointing_analysis/ @MortenHolmRep
