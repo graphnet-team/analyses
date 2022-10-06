@@ -129,7 +129,10 @@ dmypy.json
 .pyre/
 
 # images
-.png
+*.png
 
 # database types
-.db
+*.db
+
+# report types
+*.out
