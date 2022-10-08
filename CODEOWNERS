@@ -9,3 +9,4 @@ upgrade_neutrino_reconstruction/ @asogaard
 upgrade_nmo_sensitivity/ @asogaard
 upgrade_noise/ @asogaard
 moon_pointing_analysis/ @MortenHolmRep @Peterandresen12
+icedata/ @timephy
