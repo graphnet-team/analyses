@@ -1,6 +1,7 @@
 import sqlite3 as sql
 from plot_params import *
 
+import numpy as np
 import pandas as pd
 from pandas import read_sql
 
@@ -8,7 +9,7 @@ from pandas import read_sql
 
 # data pathing
 #indir = "/groups/icecube/qgf305/storage/MoonPointing/Models/inference/Sschindler_data_L4/Merged_database/"
-outdir = "/groups/icecube/qgf305/work/graphnet/studies/Moon_Pointing_Analysis/plotting/reconstruction/test_plot/"
+outdir = "/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/plots/reconstruction"
 
 # dataloading
 #azimuth = pd.read_csv(indir + "azimuth_results.csv")
@@ -37,7 +38,7 @@ outdir = "/groups/icecube/qgf305/work/graphnet/studies/Moon_Pointing_Analysis/pl
 #plt.savefig(outdir+"AngleResults.png")
 
 
-db = "/groups/icecube/qgf305/storage/databases/moonL4_segspline_exp13_01_redo_with_MoonDirection.db"
+db = "/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/real_data/moonL4_segspline_exp13_01_redo_with_MoonDirection/moonL4_segspline_exp13_01_redo_merged_with_time.db"
 with sql.connect(db) as con:
     query = """
     SELECT
@@ -46,17 +47,29 @@ with sql.connect(db) as con:
         MoonDirection;
     """
     sql_data = read_sql(query,con)
+    query_time = """
+    SELECT
+        event_time
+    FROM 
+        InIceDSTPulses;
+    """
+    sql_data["time"] = read_sql(query_time,con)
 
-plt.figure()
-plt.hist(sql_data["zenith"], bins = 10)
-plt.yscale('log')
-plt.title("Moon zenith location")
-plt.legend()
-plt.savefig(outdir + "moon_zenith.png")
+def rad_to_deg(data):
+    return (data*180)/np.pi
 
-plt.figure()
-plt.hist(sql_data["azimuth"], bins = 10)
-plt.yscale('log')
-plt.title("Moon azimuth location")
-plt.legend()
-plt.savefig(outdir + "moon_azimuth.png")
+# define binning
+rbins = np.linspace(0, sql_data.zenith.max(), 30)
+abins = np.linspace(0, 2*np.pi, 60)
+
+# calculate histogram
+hist, _, _ = np.histogram2d(sql_data.azimuth, sql_data.zenith, density=True, bins=(abins, rbins))
+A, R = np.meshgrid(abins, rbins)
+
+# plot
+fig, ax = plt.subplots(subplot_kw=dict(projection="polar"), figsize=(7, 7))
+
+pc = ax.pcolormesh(A, R, hist.T, cmap="magma_r")
+fig.colorbar(pc)
+plt.grid()
+plt.savefig(outdir + "moon_direction.png")
