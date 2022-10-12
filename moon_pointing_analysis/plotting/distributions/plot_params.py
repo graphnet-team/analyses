@@ -8,7 +8,7 @@ LEGEND_SIZE = 15
 DOT_SIZE = 24
 
 # plot size based on subplots
-single = eval("1,2,figsize=(12,9)")
+single = (12,9)
 double = (12,4)
 triple = ()
 
