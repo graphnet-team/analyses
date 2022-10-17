@@ -31,7 +31,7 @@ mkdir -p ${report_directory};
 report_location=${report_directory}${report_name}${TIMESTAMP}.out
 
 # run script
-nohup python convert_i3_files.py \
+nohup python $(readlink -f .)/moon_pointing_analysis/data/convert_i3_files.py \
 --db ${database_directory} \
 --outdir ${output_directory} \
 --keys ${keys} \

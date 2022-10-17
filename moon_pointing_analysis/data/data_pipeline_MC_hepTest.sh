@@ -24,8 +24,8 @@ mkdir -p ${report_directory};
 # save the report file to 
 report_location=${report_directory}${report_name}${TIMESTAMP}.out
 
-# run script
-nohup python $(readlink -f .)/analyses/moon_pointing_analysis/data/convert_i3_files.py \
+# run script based on bash script location
+nohup python $(readlink -f .)/moon_pointing_analysis/data/convert_i3_files.py \
 --db ${database_directory} \
 --outdir ${output_directory} \
 --keys ${keys} \
