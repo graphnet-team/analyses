@@ -10,7 +10,7 @@ output_directory=/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointi
 report_directory=/groups/icecube/${USER}/storage/nohup_reports/
 report_name=MC
 # (4) designate the feature keys to extract; found via investigating the I3-files using dataio-shovel in IceTray.
-keys=(TWSRTHVInIcePulses, SplitInIcePulses, HVInIcePulses, InIceDSTPulses, SegmentedSpline, SplineMPE, SplineMPEIC, RNNReco, RNNReco_sigma)
+keys=(I3MCTree, SplitInIcePulses, InIceDSTPulses)
 
 
 ## do not alter beyond this point ##
