@@ -34,13 +34,10 @@ parser.add_argument('-k','--keys', dest='keys', nargs='+', help='<Required> list
 
 args = parser.parse_args()
 
-print(args.keys)
-
-exit
-
 def main_icecube86(backend: str):
     """Convert IceCube-86 I3 files to intermediate `backend` format."""
     # Check(s)
+    
     assert backend in CONVERTER_CLASS
 
     inputs = [args.path_to_db]
@@ -64,7 +61,7 @@ def main_icecube_upgrade(backend: str):
     """Convert IceCube-Upgrade I3 files to intermediate `backend` format."""
     # Check(s)
     assert backend in CONVERTER_CLASS
-    return
+
     inputs = ["test_data_upgrade_2"]
     outdir = "./temp/test_upgrade"
     workers = 1
