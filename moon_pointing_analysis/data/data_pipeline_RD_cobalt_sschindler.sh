@@ -3,11 +3,11 @@
 
 # to recreate the results, follow the steps below.
 # (1) designate directory containing I3-files, including gcd file.
-database_directory=/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/monte_carlo/11069/I3files
+database_directory=/data/user/sschindler/zeuthenCluster_moonL4_exp13_01 # note: gcd contained within I3-files
 # (2) designate output directory for created script.
-output_directory=/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/monte_carlo/11069
+output_directory=/data/user/${USER}/storage/moon_pointing_analysis/real_data/moonL4_segspline_exp13_01_redo
 # (3) report output location and name
-report_directory=/groups/icecube/${USER}/storage/nohup_reports/
+report_directory=/data/user/${USER}/storage/nohup_reports/
 report_name=MC
 # (4) designate the feature keys to extract; found via investigating the I3-files using dataio-shovel in IceTray.
 keys=(TWSRTHVInIcePulses, SplitInIcePulses, HVInIcePulses, InIceDSTPulses, SegmentedSpline, SplineMPE, SplineMPEIC, RNNReco, RNNReco_sigma)
