@@ -11,7 +11,7 @@ output_directory=/data/user/${USER}/storage/moon_pointing_analysis/monte_carlo/1
 report_directory=/data/user/${USER}/storage/nohup_reports/
 report_name=MC
 # (4) designate the feature keys to extract; found via investigating the I3-files using dataio-shovel in IceTray.
-keys=(TWSRTHVInIcePulses SplitInIcePulses InIceDSTPulses SplineMPE SplineMPEIC RNNReco RNNReco_sigma )
+keys=(TWSRTHVInIcePulses, SplitInIcePulses, HVInIcePulses, InIceDSTPulses, SegmentedSpline, SplineMPE, SplineMPEIC, RNNReco, RNNReco_sigma)
 
 
 ## do not alter beyond this point ##
@@ -28,6 +28,6 @@ report_location=${report_directory}${report_name}${TIMESTAMP}.out
 # run script
 nohup python $(dirname -- "$(readlink -f "${BASH_SOURCE}")")/convert_i3_files.py \
 --db ${database_directory} \
---outdir ${output_directory} \
---keys ${keys} \
+--out ${output_directory} \
+--keys ${keys[@]} \
 > ${report_location}

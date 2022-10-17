@@ -10,7 +10,7 @@ output_directory=/groups/icecube/petersen/GraphNetDatabaseRepository...
 report_directory=/groups/icecube/${USER}/storage/nohup_reports/
 report_name=<name of report>
 # (4) designate the feature keys to extract; found via investigating the I3-files using dataio-shovel in IceTray.
-keys=(key1 key2 ... keyn)
+keys=(key1, key2, ..., keyn)
 
 
 ## do not alter beyond this point ##
@@ -33,6 +33,6 @@ report_location=${report_directory}${report_name}${TIMESTAMP}.out
 # run script
 nohup python $(dirname -- "$(readlink -f "${BASH_SOURCE}")")/convert_i3_files.py \
 --db ${database_directory} \
---outdir ${output_directory} \
---keys ${keys} \
+--out ${output_directory} \
+--keys ${keys[@]} \
 > ${report_location}
