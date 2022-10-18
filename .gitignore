@@ -139,3 +139,6 @@ dmypy.json
 
 # Pickle types
 *.pickle
+
+# Logs
+wandb/
