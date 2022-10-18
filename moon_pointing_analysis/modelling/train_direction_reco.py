@@ -5,34 +5,54 @@ from pytorch_lightning.loggers import WandbLogger
 import torch
 from torch.optim.adam import Adam
 
-from graphnet.components.loss_functions import VonMisesFisher2DLoss
+from graphnet.training.loss_functions import VonMisesFisher2DLoss
 from graphnet.data.constants import FEATURES, TRUTH
 from graphnet.data.sqlite.sqlite_selection import (
     get_equal_proportion_neutrino_indices,get_desired_event_numbers,
 )
 from graphnet.models import Model
 from graphnet.models.detector.icecube import IceCubeDeepCore
-from graphnet.models.gnn.dynedge import DynEdge, DOMCoarsenedDynEdge
+from graphnet.models.gnn.dynedge import DynEdge
 from graphnet.models.graph_builders import KNNGraphBuilder
 from graphnet.models.task.reconstruction import (
     ZenithReconstructionWithKappa,
     AzimuthReconstructionWithKappa,
 )
-from graphnet.models.training.callbacks import ProgressBar, PiecewiseLinearLR
-from graphnet.models.training.utils import (
+from graphnet.training.callbacks import ProgressBar, PiecewiseLinearLR
+from graphnet.training.utils import (
     get_predictions,
     make_train_validation_dataloader,
     save_results,
 )
 from graphnet.utilities.logging import get_logger
 
+import argparse
+
 #logger = get_logger()
+
+parser = argparse.ArgumentParser(description='processing i3 files to sqlite3 databases')
+parser.add_argument('--db', dest='path_to_db', type=str, help='path to database [str]',default="/groups/icecube/peter/storage/MoonPointing/MC_data_for_training/Gerrits_Data/merged.db")
+parser.add_argument('--pulse', dest='pulsemap', type=str, help='pulsemap type contained in the i3 file [str].',default="InIceDSTPulses")
+parser.add_argument('--outdir', dest='out', type=str, help='define the output path [str]',default="/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/trained_models")
+parser.add_argument('--gpu_no', dest='gpu', type=int, help='define the GPU to run on [int]',default=1)
+parser.add_argument('--runname', dest='runname', type=str, help='define the run name [str]',default="Test")
+
+
+args = parser.parse_args()
+
 
 # Configurations
 torch.multiprocessing.set_sharing_strategy("file_system")
 
 # Constants
 features = FEATURES.DEEPCORE
+features = ["position__x",
+        "position__y",
+        "position__z",
+        "time",
+        "charge",]
+        #"rde",
+        #"pmt_area",]
 truth = TRUTH.DEEPCORE[:-1]
 
 # Make sure W&B output directory exists
@@ -55,10 +75,10 @@ def train(config):
     # Common variables
     #train_selection, _ = get_equal_proportion_neutrino_indices(config["db"])
     #train_selection = train_selection[0:]#config["max_events"]]
-    train_selection  = get_desired_event_numbers(config["db"],desired_size=50000,fraction_muon=1)
+    train_selection  = get_desired_event_numbers(config["db"],desired_size=5000,fraction_nu_mu=1)
 #    logger.info(f"features: {features}")
 #    logger.info(f"truth: {truth}")
-
+    print(train_selection)
     (
         training_dataloader,
         validation_dataloader,
@@ -158,17 +178,17 @@ def train(config):
 # Main function definition
 def main():
     for target in ["zenith", "azimuth"]:
-        archive = "/groups/icecube/qgf305/storage/MoonPointing/Models/MC/GenieL2_Muon_Leon"
-        run_name = "dynedge_{}_GenieL2_Muon_Leon".format(target)
+        archive = args.out
+        run_name = "dynedge_{}_".format(target) + str(args.runname)
 
         # Configuration
         config = {
-            "db": "/groups/icecube/leonbozi/work2/data/lvl3_dbs/last_one_lvl3MC/data/last_one_lvl3MC.db",
-            "pulsemap": "SRTInIcePulses",
-            "batch_size": 1024,
+            "db": str(args.path_to_db),
+            "pulsemap": args.pulsemap,
+            "batch_size": 512,
             "num_workers": 10,
             "accelerator": "gpu",
-            "devices": [0],
+            "devices": [args.gpu],
             "target": target,
             "n_epochs": 20,
             "patience": 5,
@@ -177,6 +197,7 @@ def main():
             "max_events": 500000,
             "node_pooling": False,
         }
+        print(config['db'])
         train(config)
 
 

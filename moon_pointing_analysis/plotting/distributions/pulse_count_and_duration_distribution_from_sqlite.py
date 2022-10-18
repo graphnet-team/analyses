@@ -12,12 +12,12 @@ outdir = "/groups/icecube/peter/workspace/analyses/moon_pointing_analysis/plotti
 load = True
 if load:
     
-    filename_1 = outdir + 'pulse_counts'
+    filename_1 = outdir + 'pulse_counts.pickle'
     fileObject_1 = open(filename_1, 'rb')
     pulse_counts = pkl.load(fileObject_1)
     fileObject_1.close()
 
-    filename_2 = outdir + 'event_durations'
+    filename_2 = outdir + 'event_durations.pickle'
     fileObject_2 = open(filename_2, 'rb')
     event_duration = pkl.load(fileObject_2)
     fileObject_2.close()
@@ -48,12 +48,12 @@ else:
     pulse_counts = np.array(pulse_counts)
     event_duration = np.array(event_duration)
 
-    filename = outdir + 'pulse_counts'
+    filename = outdir + 'pulse_counts.pickle'
     fileObject = open(filename, 'wb')
     pkl.dump(pulse_counts, fileObject)
     fileObject.close()
 
-    filename = outdir + 'event_durations'
+    filename = outdir + 'event_durations.pickle'
     fileObject = open(filename, 'wb')
     pkl.dump(event_duration, fileObject)
     fileObject.close()
