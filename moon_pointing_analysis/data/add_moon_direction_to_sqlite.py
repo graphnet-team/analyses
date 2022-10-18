@@ -1,3 +1,8 @@
+"""
+Create the moon position from the event time given for each frame in the I3 frames and appends to an existing sqlite3 database in a new table.
+The script *must* be run in IceTray.
+"""
+
 from cmath import nan
 import sqlite3 as sql
 import numpy as np
