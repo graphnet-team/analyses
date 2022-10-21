@@ -8,7 +8,8 @@ from torch.optim.adam import Adam
 from graphnet.components.loss_functions import VonMisesFisher2DLoss
 from graphnet.data.constants import FEATURES, TRUTH
 from graphnet.data.sqlite.sqlite_selection import (
-    get_equal_proportion_neutrino_indices,get_desired_event_numbers,
+    get_equal_proportion_neutrino_indices,
+    get_desired_event_numbers,
 )
 from graphnet.models import Model
 from graphnet.models.detector.icecube import IceCubeDeepCore
@@ -26,7 +27,7 @@ from graphnet.models.training.utils import (
 )
 from graphnet.utilities.logging import get_logger
 
-#logger = get_logger()
+# logger = get_logger()
 
 # Configurations
 torch.multiprocessing.set_sharing_strategy("file_system")
@@ -40,24 +41,27 @@ WANDB_DIR = "./wandb/"
 os.makedirs(WANDB_DIR, exist_ok=True)
 
 # Initialise Weights & Biases (W&B) run
-#wandb_logger = WandbLogger(
+# wandb_logger = WandbLogger(
 #    project="example-script",
 #    entity="graphnet-team",
 #    save_dir=WANDB_DIR,
 #    log_model=True,
-#)
+# )
 #
+
 
 def train(config):
     # Log configuration to W&B
- #   wandb_logger.experiment.config.update(config)
+    #   wandb_logger.experiment.config.update(config)
 
     # Common variables
-    #train_selection, _ = get_equal_proportion_neutrino_indices(config["db"])
-    #train_selection = train_selection[0:]#config["max_events"]]
-    train_selection  = get_desired_event_numbers(config["db"],desired_size=50000,fraction_muon=1)
-#    logger.info(f"features: {features}")
-#    logger.info(f"truth: {truth}")
+    # train_selection, _ = get_equal_proportion_neutrino_indices(config["db"])
+    # train_selection = train_selection[0:]#config["max_events"]]
+    train_selection = get_desired_event_numbers(
+        config["db"], desired_size=50000, fraction_muon=1
+    )
+    #    logger.info(f"features: {features}")
+    #    logger.info(f"truth: {truth}")
 
     (
         training_dataloader,
@@ -132,13 +136,13 @@ def train(config):
         max_epochs=config["n_epochs"],
         callbacks=callbacks,
         log_every_n_steps=1,
-#        logger=wandb_logger,
+        #        logger=wandb_logger,
     )
 
     try:
         trainer.fit(model, training_dataloader, validation_dataloader)
     except KeyboardInterrupt:
-#        logger.warning("[ctrl+c] Exiting gracefully.")
+        #        logger.warning("[ctrl+c] Exiting gracefully.")
         pass
 
     # Saving predictions to file
@@ -146,7 +150,7 @@ def train(config):
         trainer,
         model,
         validation_dataloader,
-        [config["target"] + "_pred",config["target"] + "_kappa_pred" ],
+        [config["target"] + "_pred", config["target"] + "_kappa_pred"],
         additional_attributes=[config["target"], "event_no"],
     )
 

@@ -9,13 +9,17 @@ from torch.optim.adam import Adam
 from graphnet.components.loss_functions import LogCoshLoss, GaussianNLLLoss
 from graphnet.data.constants import FEATURES, TRUTH
 from graphnet.data.sqlite.sqlite_selection import (
-    get_equal_proportion_neutrino_indices,get_desired_event_numbers,
+    get_equal_proportion_neutrino_indices,
+    get_desired_event_numbers,
 )
 from graphnet.models import Model
 from graphnet.models.detector.icecube import IceCubeDeepCore
 from graphnet.models.gnn import DynEdge
 from graphnet.models.graph_builders import KNNGraphBuilder
-from graphnet.models.task.reconstruction import EnergyReconstruction, PointingReconstructionWithKappa
+from graphnet.models.task.reconstruction import (
+    EnergyReconstruction,
+    PointingReconstructionWithKappa,
+)
 from graphnet.models.training.callbacks import ProgressBar, PiecewiseLinearLR
 from graphnet.models.training.utils import (
     get_predictions,
@@ -24,9 +28,11 @@ from graphnet.models.training.utils import (
 )
 from graphnet.utilities.logging import get_logger
 
-from graphnet.models.task.reconstruction import ZenithAndAzimuthReconstructionWithKappa
+from graphnet.models.task.reconstruction import (
+    ZenithAndAzimuthReconstructionWithKappa,
+)
 
-#logger = get_logger()
+# logger = get_logger()
 
 # Configurations
 torch.multiprocessing.set_sharing_strategy("file_system")
@@ -36,23 +42,23 @@ features = FEATURES.DEEPCORE
 truth = TRUTH.DEEPCORE[:-1]
 
 # Make sure W&B output directory exists
-#WANDB_DIR = "./wandb/"
-#os.makedirs(WANDB_DIR, exist_ok=True)
+# WANDB_DIR = "./wandb/"
+# os.makedirs(WANDB_DIR, exist_ok=True)
 
 # Initialise Weights & Biases (W&B) run
-#wandb_logger = WandbLogger(
+# wandb_logger = WandbLogger(
 #    project="example-script",
 #    entity="graphnet-team",
 #    save_dir=WANDB_DIR,
 #    log_model=True,
-#)
+# )
 
 
 # Main function definition
 def main():
 
-    #logger.info(f"features: {features}")
-    #logger.info(f"truth: {truth}")
+    # logger.info(f"features: {features}")
+    # logger.info(f"truth: {truth}")
 
     # Configuration
     config = {
@@ -62,7 +68,7 @@ def main():
         "num_workers": 10,
         "accelerator": "gpu",
         "devices": [1],
-        "target": ["zenith","azimuth"],
+        "target": ["zenith", "azimuth"],
         "n_epochs": 100,
         "patience": 5,
     }
@@ -70,12 +76,14 @@ def main():
     run_name = "dynedge_{}_example".format(config["target"])
 
     # Log configuration to W&B
-    #wandb_logger.experiment.config.update(config)
+    # wandb_logger.experiment.config.update(config)
 
     # Common variables
-    #train_selection, _ = get_equal_proportion_neutrino_indices(config["db"])
-    #train_selection = train_selection[0:500000]
-    train_selection  = get_desired_event_numbers(config["db"],desired_size= 50000,fraction_muon=1)
+    # train_selection, _ = get_equal_proportion_neutrino_indices(config["db"])
+    # train_selection = train_selection[0:500000]
+    train_selection = get_desired_event_numbers(
+        config["db"], desired_size=50000, fraction_muon=1
+    )
 
     (
         training_dataloader,
@@ -101,7 +109,7 @@ def main():
         hidden_size=gnn.nb_outputs,
         target_labels=config["target"],
         loss_function=GaussianNLLLoss(),
-        #transform_prediction_and_target=torch.log10,
+        # transform_prediction_and_target=torch.log10,
     )
     model = Model(
         detector=detector,
@@ -138,7 +146,7 @@ def main():
         max_epochs=config["n_epochs"],
         callbacks=callbacks,
         log_every_n_steps=1,
-        #logger=wandb_logger,
+        # logger=wandb_logger,
     )
 
     try:
@@ -152,8 +160,16 @@ def main():
         trainer,
         model,
         validation_dataloader,
-        [config["target"][0] + "_pred", config["target"][1] + "_pred", "kappa_pred"],
-        additional_attributes=[config["target"][0],config["target"][1], "event_no"],
+        [
+            config["target"][0] + "_pred",
+            config["target"][1] + "_pred",
+            "kappa_pred",
+        ],
+        additional_attributes=[
+            config["target"][0],
+            config["target"][1],
+            "event_no",
+        ],
     )
 
     save_results(config["db"], run_name, results, archive, model)

@@ -1,43 +1,62 @@
+import argparse
 import sqlite3 as sql
-from plot_params import *
-import numpy as np
 from pandas import read_sql
+from plot_params import *
 
-# data pathing
-indir = "/groups/icecube/peter/storage/MoonPointing/data/Sschindler_data_L4/Merged_database/moonL4_segspline_exp13_01_redo_merged_with_time.db"
-outdir = "/groups/icecube/qgf305/work/graphnet/studies/Moon_Pointing_Analysis/plotting/distributions/test_plot"
+
+parser = argparse.ArgumentParser(
+    description="processing i3 files to sqlite3 databases"
+)
+parser.add_argument(
+    "-db",
+    "--database",
+    dest="path_to_db",
+    type=str,
+    help="path to database [str]",
+    default="/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/real_data/data_with_reco/moonL4_segspline_exp13_01_merged_with_time_and_reco_and_new_pulsemap.db",
+)
+parser.add_argument(
+    "-o", "--output", dest="output", type=str, help="the output path [str]"
+)
+parser.add_argument(
+    "-p",
+    "--pulsemap",
+    dest="pulsemap",
+    type=str,
+    help="the pulsemap used [str]",
+    default="TWSRTHVInIcePulses",
+)
+args = parser.parse_args()
 
 # dataloading
-with sql.connect(indir) as con:
+with sql.connect(args.path_to_db) as con:
     query = """
     SELECT
-        charge, dom_time, dom_x, dom_y, dom_z, event_no, pmt_area, rde, width
+        dom_time, event_no
     FROM 
-        InIceDSTPulses;
-    """
-    sql_data = read_sql(query,con)
+        %s;
+    """ % (
+        args.pulsemap
+    )
+    sql_data = read_sql(query, con)
 
-pulse_counts = []
-event_duration = []
-i = 0
-for nr in sql_data['event_no'].unique():
-    i+=1
-    pulse_counts.append(len(sql_data[sql_data['event_no']==nr]))
-    max_time = np.max(sql_data[sql_data['event_no']==nr]['dom_time'])
-    min_time = np.min(sql_data[sql_data['event_no']==nr]['dom_time'])
-    event_duration.append(max_time-min_time)
-    if i%5000 == 0:
-        print(i)
-    
-fig, axs = plt.subplots(1,2,figsize=(16, 8))
+pulse_counts = sql_data.groupby("event_no").size()
 
-axs[0,0].hist(pulse_counts)
-axs[0,0].set_title('Pulse counts')
-axs[0,0].set_xlabel("# of pulses")
+max_times = sql_data.groupby("event_no").max()
+min_times = sql_data.groupby("event_no").min()
+event_durations = max_times - min_times
 
-axs[0,1].hist(event_duration)
-axs[0,1].set_title('event durations')
-axs[0,1].set_xlabel("duration in ns")
+fig, axes = plt.subplots(1, 2, figsize=double)
+
+axes[0].hist(pulse_counts)
+axes[0].set_title("Pulse counts")
+axes[0].set_yscale("log")
+axes[0].set_xlabel("# of pulses")
+
+axes[1].hist(event_durations)
+axes[1].set_title("event durations")
+axes[1].set_yscale("log")
+axes[1].set_xlabel("duration in ns")
 
 fig.tight_layout()
-fig.savefig(outdir + 'Event_durations_&_Pulse_counts_of_real_data')
+fig.savefig(args.output + "Event_durations_and_Pulse_counts_of_real_data")
