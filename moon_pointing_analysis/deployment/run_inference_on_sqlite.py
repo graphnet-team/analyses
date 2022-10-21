@@ -4,11 +4,15 @@ import logging
 
 from pytorch_lightning import Trainer
 from pytorch_lightning.callbacks import EarlyStopping
-#from pytorch_lightning.loggers import WandbLogger
+
+# from pytorch_lightning.loggers import WandbLogger
 import torch
 from torch.optim.adam import Adam
 
-from graphnet.components.loss_functions import LogCoshLoss, VonMisesFisher2DLoss
+from graphnet.components.loss_functions import (
+    LogCoshLoss,
+    VonMisesFisher2DLoss,
+)
 from graphnet.data.constants import FEATURES, TRUTH
 from graphnet.data.sqlite.sqlite_selection import (
     get_equal_proportion_neutrino_indices,
@@ -17,27 +21,30 @@ from graphnet.models import Model
 from graphnet.models.detector.icecube import IceCubeDeepCore
 from graphnet.models.gnn import DynEdge
 from graphnet.models.graph_builders import KNNGraphBuilder
-from graphnet.models.task.reconstruction import ZenithReconstructionWithKappa, AzimuthReconstructionWithKappa
+from graphnet.models.task.reconstruction import (
+    ZenithReconstructionWithKappa,
+    AzimuthReconstructionWithKappa,
+)
 from graphnet.models.training.callbacks import ProgressBar, PiecewiseLinearLR
 from graphnet.models.training.utils import (
-    get_predictions, 
-    make_dataloader, #make_train_validation_dataloader
+    get_predictions,
+    make_dataloader,  # make_train_validation_dataloader
     save_results,
 )
 from graphnet.utilities.logging import get_logger
 
-#logger = get_logger(logging.DEBUG)
+# logger = get_logger(logging.DEBUG)
 
 # Configurations
 torch.multiprocessing.set_sharing_strategy("file_system")
 
 # Initialise Weights & Biases (W&B) run
-#wandb_logger = WandbLogger(
+# wandb_logger = WandbLogger(
 #    project="example-script",
 #    entity="graphnet-team",
 #    save_dir="./wandb/",
 #    log_model=True,
-#)
+# )
 
 # Constants
 features = FEATURES.DEEPCORE
@@ -63,12 +70,14 @@ def main(
         "patience": 1,
     }
     archive = output_path
-    run_name = "dynedge_trained_on_leon_MC_{}_predict_azimuth".format(config["target"])
+    run_name = "dynedge_trained_on_leon_MC_{}_predict_azimuth".format(
+        config["target"]
+    )
 
     # Log configuration to W&B
-    #wandb_logger.experiment.config.update(config)
-    #train_selection, _ = get_equal_proportion_neutrino_indices(config["db"])
-    #train_selection = train_selection[0:50000]
+    # wandb_logger.experiment.config.update(config)
+    # train_selection, _ = get_equal_proportion_neutrino_indices(config["db"])
+    # train_selection = train_selection[0:50000]
 
     prediction_dataloader = make_dataloader(
         config["db"],
@@ -76,10 +85,10 @@ def main(
         features,
         truth,
         batch_size=config["batch_size"],
-        shuffle=False,  
+        shuffle=False,
         num_workers=config["num_workers"],
     )
-    
+
     # Building model
     detector = IceCubeDeepCore(
         graph_builder=KNNGraphBuilder(nb_nearest_neighbours=8),
@@ -124,7 +133,7 @@ def main(
         max_epochs=config["n_epochs"],
         callbacks=callbacks,
         log_every_n_steps=1,
-        #logger=wandb_logger,
+        # logger=wandb_logger,
     )
 
     # Load model
@@ -135,12 +144,15 @@ def main(
         trainer,
         model,
         prediction_dataloader,
-        [config["target"] + "_pred",config["target"] + "_kappa_pred" ],
+        [config["target"] + "_pred", config["target"] + "_kappa_pred"],
         additional_attributes=[config["target"], "event_no"],
     )
 
-    #save_results(config["db"], run_name, results, archive, model)
-    results.to_csv(output_folder + "/{}_Leon_MC_results.csv".format(config["target"]))
+    # save_results(config["db"], run_name, results, archive, model)
+    results.to_csv(
+        output_folder + "/{}_Leon_MC_results.csv".format(config["target"])
+    )
+
 
 # Main function call
 if __name__ == "__main__":

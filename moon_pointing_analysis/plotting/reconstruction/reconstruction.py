@@ -15,26 +15,26 @@ azimuth = pd.read_csv(indir + "azimuth_results.csv")
 zenith = pd.read_csv(indir + "zenith_results.csv")
 
 # assign empty containers and plotting parameters
-grid = plt.GridSpec(1,2, wspace=0.3, hspace=.3)
-fig,ax = plt.subplots(1,2,figsize=double)
+grid = plt.GridSpec(1, 2, wspace=0.3, hspace=0.3)
+fig, ax = plt.subplots(1, 2, figsize=double)
 
 ## plot into containers
 plt.subplot(grid[0, 0])
 plt.title("azimuth prediction")
 mappable = plt.hist2d(
-    azimuth.azimuth_pred, azimuth.azimuth, 
-    bins = bin_number,cmap='viridis')
+    azimuth.azimuth_pred, azimuth.azimuth, bins=bin_number, cmap="viridis"
+)
 colorbar(mappable[3])
 
 plt.subplot(grid[0, 1])
 plt.title("zenith prediction")
 mappable = plt.hist2d(
-    zenith.zenith_pred, zenith.zenith, 
-    bins = bin_number,cmap='viridis')
+    zenith.zenith_pred, zenith.zenith, bins=bin_number, cmap="viridis"
+)
 colorbar(mappable[3])
 
 # save the plot
-plt.savefig(outdir+"AngleResults.png")
+plt.savefig(outdir + "AngleResults.png")
 
 
 db = "/groups/icecube/peter/storage/MoonPointing/data/Sschindler_data_L4/Merged_database/Merged_database.db"
@@ -45,12 +45,11 @@ with sql.connect(db) as con:
     FROM 
         InIceDSTPulses;
     """
-    sql_data = read_sql(query,con)
+    sql_data = read_sql(query, con)
 
 plt.figure()
-plt.hist(sql_data["charge"], bins = 10)
-plt.yscale('log')
+plt.hist(sql_data["charge"], bins=10)
+plt.yscale("log")
 plt.title("input data: Charge")
 plt.legend()
 plt.savefig(outdir + "L2_2018_1.png")
-
