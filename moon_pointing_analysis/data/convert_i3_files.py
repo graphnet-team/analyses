@@ -1,4 +1,7 @@
-"""Minimum working example (MWE) to use ParquetDataConverter."""
+"""
+Converting I3-files to sqlite3 database format.
+This is a copy of the example script in graphnet, modified to work in a pipeline, i.e. the script should be kept static.
+"""
 
 import logging
 import os
@@ -9,7 +12,7 @@ from graphnet.data.extractors import (
     I3FeatureExtractorIceCubeUpgrade,
     I3RetroExtractor,
     I3TruthExtractor,
-    I3GenericExtractor,
+    I3FeatureExtractor,
 )
 from graphnet.data.parquet import ParquetDataConverter
 from graphnet.data.sqlite import SQLiteDataConverter
@@ -23,30 +26,49 @@ CONVERTER_CLASS = {
     "parquet": ParquetDataConverter,
 }
 
-parser = argparse.ArgumentParser(description='processing i3 files to sqlite3 databases')
-parser.add_argument('--db', dest='path_to_db', type=str, help='path to database [str]')
-parser.add_argument('--pulse', dest='pulsemap', type=str, help='pulsemap type contained in the i3 file [str].')
-parser.add_argument('--gcd', dest='gcd_rescue', default=None, help="define the gcd path, default is 'None'; if set to 'None' it will attempt to find gcd within the file")
-parser.add_argument('--outdir', dest='out', type=str, help='define the output path [str]')
+parser = argparse.ArgumentParser(
+    description="processing i3 files to sqlite3 databases"
+)
+parser.add_argument(
+    "--db",
+    dest="path_to_db",
+    type=str,
+    help="path to database [str]",
+    default="/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/monte_carlo/11069/I3files",
+)
+parser.add_argument(
+    "--gcd",
+    dest="gcd_rescue",
+    default=None,
+    help="define the gcd path, default is 'None'; if set to 'None' it will attempt to find gcd within the file",
+)
+parser.add_argument(
+    "-o", "--out", dest="out", type=str, help="define the output path [str]"
+)
+parser.add_argument(
+    "-k",
+    "--keys",
+    dest="keys",
+    nargs="+",
+    help="<Required> list of keys",
+    required=True,
+)
 
 args = parser.parse_args()
+
 
 def main_icecube86(backend: str):
     """Convert IceCube-86 I3 files to intermediate `backend` format."""
     # Check(s)
+
     assert backend in CONVERTER_CLASS
 
     inputs = [args.path_to_db]
-    outdir = args.out+"/temp/test_ic86"
+    outdir = args.out
 
     converter = CONVERTER_CLASS[backend](
         [
-            I3GenericExtractor(
-                keys=[
-                    args.pulsemap,
-                    "I3MCTree",
-                ]
-            ),
+            I3FeatureExtractor(keys=args.keys),
             I3TruthExtractor(),
         ],
         outdir,
@@ -89,7 +111,7 @@ def main_icecube_upgrade(backend: str):
 
 
 if __name__ == "__main__":
+    # backend = "parquet"
     backend = "sqlite"
-    # backend = "sqlite"
     main_icecube86(backend)
     # main_icecube_upgrade(backend)

@@ -1,30 +1,53 @@
+"""mostly an example script"""
 import sqlite3 as sql
-from ..plot_params import *
-
+import argparse
 from pandas import read_sql
+from plot_params import *
 
-# data pathing
-indir = "/groups/icecube/peter/storage/MoonPointing/data/Sschindler_data_L4/Merged_database/Merged_database.db"
-outdir = "/groups/icecube/qgf305/work/graphnet/studies/Moon_Pointing_Analysis/plotting/distributions/test_plot"
+parser = argparse.ArgumentParser(
+    description="processing i3 files to sqlite3 databases"
+)
+parser.add_argument(
+    "-db",
+    "--database",
+    dest="path_to_db",
+    type=str,
+    help="path to database [str]",
+    required=True,
+)
+parser.add_argument(
+    "-o",
+    "--output",
+    dest="output",
+    type=str,
+    help="the output path [str]",
+    required=True,
+)
+parser.add_argument(
+    "-p",
+    "--pulsemap",
+    dest="pulsemap",
+    type=str,
+    help="the pulsemap used [str]",
+    required=True,
+)
+args = parser.parse_args()
 
 # dataloading
-with sql.connect(db) as con:
+with sql.connect(args.path_to_db) as con:
     query = """
     SELECT
         charge, dom_time, dom_x, dom_y, dom_z, event_no, pmt_area, rde, width
     FROM 
-        InIceDSTPulses;
-    """
-    sql_data = read_sql(query,con)
+        %s;
+    """ % (
+        args.pulsemap
+    )
+    sql_data = read_sql(query, con)
 
-# assign empty containers and plotting parameters
-grid = plt.GridSpec(1,2, wspace=0.3, hspace=.3)
-fig,ax = plt.subplots(single)
-
-## plot into containers
 plt.figure()
-plt.hist(sql_data["charge"], bins = 10)
-plt.yscale('log')
+plt.hist(sql_data["charge"], bins=10)
+plt.yscale("log")
 plt.title("input data: Charge")
 plt.legend()
-plt.savefig(outdir + "L2_2018_1.png")
+plt.savefig(args.output + "L2_2018_1.png")
