@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Notes: points to the entire 1.1TB dataset of monte carlo numu data.
+# Description: points to the entire 1.1TB dataset of monte carlo numu data.
 
 # to recreate the results, follow the steps below.
 # (1) designate directory containing I3-files, including gcd file.
@@ -24,6 +24,10 @@ mkdir -p ${report_directory};
 
 # save the report file to 
 report_location=${report_directory}${report_name}${TIMESTAMP}.out
+
+# Starts IceTray
+eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.1.0/setup.sh`
+/cvmfs/icecube.opensciencegrid.org/py3-v4.1.0/RHEL_7_x86_64/metaprojects/combo/stable/env-shell.sh
 
 # run script
 nohup python $(dirname -- "$(readlink -f "${BASH_SOURCE}")")/convert_i3_files.py \

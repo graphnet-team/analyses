@@ -1,10 +1,12 @@
-"""mostly an example script"""
 import os, sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..')))
 import sqlite3 as sql
+import numpy as np
+import pandas as pd
 import argparse
 from pandas import read_sql
 from helper_functions.plot_params import *
+
 
 parser = argparse.ArgumentParser(
     description="processing i3 files to sqlite3 databases"
@@ -35,21 +37,38 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
-# dataloading
+
 with sql.connect(args.path_to_db) as con:
     query = """
     SELECT
-        charge, dom_time, dom_x, dom_y, dom_z, event_no, pmt_area, rde, width
+        azimuth, zenith
     FROM 
-        %s;
-    """ % (
-        args.pulsemap
-    )
+        MoonDirection;
+    """
     sql_data = read_sql(query, con)
 
-plt.figure()
-plt.hist(sql_data["charge"], bins=10)
-plt.yscale("log")
-plt.title("input data: Charge")
-plt.legend()
-plt.savefig(args.output + "L2_2018_1.png")
+    query_time = """
+    SELECT
+        event_time
+    FROM 
+        InIceDSTPulses;
+    """
+    sql_data["time"] = read_sql(query_time, con)
+
+# define binning
+rbins = np.linspace(0, sql_data.zenith.max(), 30)
+abins = np.linspace(0, 2 * np.pi, 60)
+
+# calculate histogram
+hist, _, _ = np.histogram2d(
+    sql_data.azimuth, sql_data.zenith, density=True, bins=(abins, rbins)
+)
+A, R = np.meshgrid(abins, rbins)
+
+# plot
+fig, ax = plt.subplots(subplot_kw=dict(projection="polar"), figsize=(7, 7))
+
+pc = ax.pcolormesh(A, R, hist.T, cmap="magma_r")
+fig.colorbar(pc)
+plt.grid()
+plt.savefig(args.output + "moon_direction.png")

@@ -1,16 +1,12 @@
-import sqlite3 as sql
-from plot_params import *
-from iminuit import Minuit
 import pandas as pd
-from pandas import read_sql
 import numpy as np
 from scipy import stats
 from scipy.stats import binom, poisson, norm
-import sys
+from helper_functions.plot_params import *
+from iminuit import Minuit
 
-sys.path.append("/groups/icecube/peter/workspace/External_functions")
-from Troels_external_functions import Chi2Regression
-from Troels_external_functions import (
+from helper_functions.external_functions import Chi2Regression
+from helper_functions.external_functions import (
     nice_string_output,
     add_text_to_ax,
 )  # Useful functions to print fit results on figure
@@ -32,12 +28,8 @@ azimuth_std = 1 / np.sqrt(azimuth_db.azimuth_kappa_pred)
 azimuth_diff = azimuth_pred - azimuth
 
 print(azimuth_diff[azimuth_diff > np.pi])
-azimuth_diff[azimuth_diff > np.pi] = (
-    azimuth_diff[azimuth_diff > np.pi] - 2 * np.pi
-)
-azimuth_diff[azimuth_diff < -np.pi] = (
-    azimuth_diff[azimuth_diff < -np.pi] + 2 * np.pi
-)
+azimuth_diff[azimuth_diff > np.pi] = (azimuth_diff[azimuth_diff > np.pi] - 2 * np.pi)
+azimuth_diff[azimuth_diff < -np.pi] = (azimuth_diff[azimuth_diff < -np.pi] + 2 * np.pi)
 print(azimuth_diff[:10])
 azimuth_z = azimuth_diff / azimuth_std
 

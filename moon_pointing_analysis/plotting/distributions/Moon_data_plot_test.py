@@ -1,5 +1,5 @@
 import sqlite3 as sql
-from plot_params import *
+from analyses.moon_pointing_analysis.plotting.helper_functions.plot_params import *
 
 import pandas as pd
 from pandas import read_sql
@@ -12,22 +12,22 @@ azimuth_db = pd.read_csv(azimuth_db)
 azimuth = azimuth_db.azimuth_pred
 azimuth_std = 1 / np.sqrt(azimuth_db.azimuth_kappa_pred)
 
-zenith_db = "/groups/icecube/peter/storage/MoonPointing/data/Sschindler_data_L4/Merged_database/zenith_Leon_MC_results.csv"
+zenith_db = "/groups/icecube/peter/storage/MoonPointing/data/Sschindler_data_L4/Merged_database/zenith_results.csv"
 zenith_db = pd.read_csv(zenith_db)
 zenith = zenith_db.zenith_pred
 zenith_std = 1 / np.sqrt(zenith_db.zenith_kappa_pred)
 # zenith[zenith>np.pi/2] = np.pi-zenith[zenith>np.pi/2]
 
 good_selection_mask = (
-    np.array(zenith > 0.001)
+    np.array(zenith > 0.1)
     * np.array(zenith_std < 1)
     * np.array(azimuth_std < 1)
-)  # np.array(zenith> 0.1)*np.array(zenith_std<1)*np.array(azimuth_std<1)
+)
 bad_selection_mask = np.logical_not(good_selection_mask)
 
 plot_first = len(zenith)
 
-to_angles = True
+to_angles = False
 if to_angles == True:
     zenith = zenith * 180 / np.pi
     azimuth = azimuth * 180 / np.pi
@@ -51,7 +51,7 @@ axs[1, 1].set_title("bad selection")
 axs[1, 1].set_xlabel("azimuth")
 fig.tight_layout()
 fig.savefig(
-    "/groups/icecube/peter/workspace/graphnetmoon/graphnet/studies/Moon_Pointing_Analysis/plotting/Test_Plots/Sschindler_L4_data_Leon_model_plots/Angular_reconstruction_test_angles_binned.png"
+    "/groups/icecube/peter/workspace/graphnetmoon/graphnet/studies/Moon_Pointing_Analysis/plotting/Test_Plots/Sschindler_L4_data_first_plots/Angular_reconstruction_test_angles_binned.png"
 )
 
 plt.figure()
@@ -68,7 +68,7 @@ plt.colorbar()
 plt.legend()
 plt.tight_layout()
 plt.savefig(
-    "/groups/icecube/peter/workspace/graphnetmoon/graphnet/studies/Moon_Pointing_Analysis/plotting/Test_Plots/Sschindler_L4_data_Leon_model_plots/Angular_reconstruction_test.png"
+    "/groups/icecube/peter/workspace/graphnetmoon/graphnet/studies/Moon_Pointing_Analysis/plotting/Test_Plots/Sschindler_L4_data_first_plots/Angular_reconstruction_test.png"
 )
 
 
@@ -115,7 +115,7 @@ axs[1, 1].set_xlabel("azimuth")
 
 fig.tight_layout()
 fig.savefig(
-    "/groups/icecube/peter/workspace/graphnetmoon/graphnet/studies/Moon_Pointing_Analysis/plotting/Test_Plots/Sschindler_L4_data_Leon_model_plots/Angular_reconstruction_angles_vs_uncertainties.png"
+    "/groups/icecube/peter/workspace/graphnetmoon/graphnet/studies/Moon_Pointing_Analysis/plotting/Test_Plots/Sschindler_L4_data_first_plots/Angular_reconstruction_angles_vs_uncertainties.png"
 )
 
 
@@ -131,25 +131,25 @@ axs[1, 0].set_title("good selection")
 axs[1, 0].set_xlabel("azimuth std")
 axs[1, 0].set_xlim((0, 1))
 
-axs[0, 1].hist(zenith_std[bad_selection_mask][:plot_first], bin_number)
+axs[0, 1].hist(zenith_std[bad_selection_mask][:plot_first], bin_number * 8)
 axs[0, 1].set_title("bad selection")
 axs[0, 1].set_xlabel("zenith std")
 axs[0, 1].set_xlim((0, 1))
 
-axs[1, 1].hist(azimuth_std[bad_selection_mask][:plot_first], bin_number)
+axs[1, 1].hist(azimuth_std[bad_selection_mask][:plot_first], bin_number * 3)
 axs[1, 1].set_title("bad selection")
 axs[1, 1].set_xlabel("azimuth std")
 axs[1, 1].set_xlim((0, 1))
 fig.tight_layout()
 fig.savefig(
-    "/groups/icecube/peter/workspace/graphnetmoon/graphnet/studies/Moon_Pointing_Analysis/plotting/Test_Plots/Sschindler_L4_data_Leon_model_plots/Angular_reconstruction_test_uncertainties_binned.png"
+    "/groups/icecube/peter/workspace/graphnetmoon/graphnet/studies/Moon_Pointing_Analysis/plotting/Test_Plots/Sschindler_L4_data_first_plots/Angular_reconstruction_test_uncertainties_binned.png"
 )
 
 
-# test = np.array(zenith< 0.1)
-# test2 = []
-# for i in range(len(test)):
-#    if test[i] == True:
-#        test2.append(i)
-# print(test2)
-# print(len(test2))
+test = np.array(zenith < 0.1)
+test2 = []
+for i in range(len(test)):
+    if test[i] == True:
+        test2.append(i)
+print(test2)
+print(len(test2))

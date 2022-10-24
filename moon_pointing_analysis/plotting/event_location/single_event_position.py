@@ -1,6 +1,8 @@
+import os, sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..')))
 import sqlite3 as sql
 import argparse
-from plot_params import *
+from helper_functions.plot_params import *
 from pandas import read_sql
 
 parser = argparse.ArgumentParser(
@@ -57,13 +59,13 @@ dom = ax.scatter3D(
     specific_event["dom_z"],
     c=specific_event["dom_time"],
     cmap="coolwarm",
-    s=25,
+    s=25, alpha=1
 )  # TODO; s should vary in size like the official plots
-fig.colorbar(dom, ax=ax)
+colorbar(dom)
 ax.set_xlabel("x position")
 ax.set_ylabel("x position")
 ax.set_zlabel("Z Label")
 plt.title(
     f"simple 3D scatter plot of dom positions for event #{event_numbers[0]}"
 )
-plt.savefig(args.output + "scatter.png")
+plt.savefig(args.output + "single_event_position.png")
