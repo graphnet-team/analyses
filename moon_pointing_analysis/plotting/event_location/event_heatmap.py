@@ -1,9 +1,11 @@
+import os, sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..')))
 import sqlite3 as sql
 import argparse
 import numpy as np
 import itertools
 from matplotlib.colors import LogNorm
-from plot_params import *
+from helper_functions.plot_params import *
 from pandas import read_sql
 
 
@@ -60,7 +62,7 @@ with sql.connect(args.path_to_db) as con:
 grid = plt.GridSpec(1, 3, wspace=0.7, hspace=0.4)
 fig, ax = plt.subplots(1, 3, figsize=triple)
 
-## plot into containers
+## plot trigger density into containers
 for i, dom in enumerate(
     itertools.combinations(["dom_x", "dom_y", "dom_z"], 2)
 ):
@@ -79,7 +81,6 @@ for i, dom in enumerate(
     colorbar(mappable)
     plt.xlabel(dom[0] + " position")
     plt.ylabel(dom[1] + " position")
-    plt.title(f"trigger density")
 
 plt.savefig(args.output + "trigger_density.png")
 

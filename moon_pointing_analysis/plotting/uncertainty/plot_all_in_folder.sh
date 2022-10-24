@@ -6,11 +6,14 @@ bash_directory=$(dirname -- "$(readlink -f "${BASH_SOURCE}")")
 
 # to recreate the results, follow the steps below.
 # (1) designate directory containing database; data described in folder.
-database_directory=/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/real_data/data_with_reco/moonL4_segspline_exp13_01_merged_with_time_and_reco_and_new_pulsemap.db
+database_directory=(\
+/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/trained_models/dynedge_azimuth_example/results.csv \
+/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/trained_models/dynedge_zenith_example/results.csv \
+)
 # (2) designate the pulsemap used.
 pulsemap=TWSRTHVInIcePulses
 # (3) specifically for the heatmap, define the number of bins.
-bins=25
+bins=500
 # (4) to run this shell script; copy file path and execute "bash <file_path>"
 
 
@@ -31,25 +34,17 @@ mkdir -p ${output_directory};
 mkdir -p ${report_directory};
 
 # save the report file to 
-report_location=${report_directory}${report_name}.err
+report_location=${report_directory}${report_name}.out
 
-nohup python ${bash_directory}/event_heatmap.py \
--db ${database_directory} \
+nohup python ${bash_directory}/uncertainty_test.py \
+--database ${database_directory[@]} \
 --bins ${bins} \
 -o ${output_directory} \
 -p ${pulsemap} \
-2> ${report_location}
+> ${report_location}
 
-nohup python ${bash_directory}/single_event_position.py \
--db ${database_directory} \
--o ${output_directory} \
--p ${pulsemap} \
-2> ${report_location}
-
-database_directory=/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/real_data/moonL4_segspline_exp13_01_redo_with_MoonDirection/moonL4_segspline_exp13_01_redo_merged_with_time.db
-
-nohup python ${bash_directory}/moon_position_true.py \
--db ${database_directory} \
--o ${output_directory} \
--p ${pulsemap} \
-2> ${report_location}
+#nohup python ${bash_directory}/reconstruction.py \
+#-db ${database_directory[@]} \
+#-o ${output_directory} \
+#-p ${pulsemap} \
+#> ${report_location}
