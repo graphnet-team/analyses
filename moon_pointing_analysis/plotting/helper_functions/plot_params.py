@@ -1,6 +1,8 @@
-"""Standardizing plotting style across all plots"""
+"""
+Standardizing plotting style across all plots
+Note: from test, variables need to be included first, then imports and functions.
+"""
 
-# Text sizing; based on readability on an A4 paper
 SUPTITLE_SIZE = 16
 TITLE_SIZE = 16
 LABEL_SIZE = 16
@@ -13,21 +15,21 @@ single = (16, 10)
 double = (16, 7)
 triple = (16, 4)
 
-# ylim buffer
-size = 0.02
+# ylim buffer for more clear graphs
+buffer = 0.02
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 plt.style.use("seaborn-white")
 
-# Sets the label sizes based on the predefined text sizes
 plt.rc("xtick", labelsize=TICK_SIZE)
 plt.rc("ytick", labelsize=TICK_SIZE)
 plt.rc("axes", labelsize=LABEL_SIZE, titlesize=TITLE_SIZE)
 plt.rc("legend", fontsize=LEGEND_SIZE)
 plt.rcParams["legend.title_fontsize"] = LEGEND_SIZE
 plt.rcParams["figure.autolayout"] = True
+# plt.rcParams["figure.figsize"] = [7.50, 3.50]
 
 
 def colorbar(mappable):

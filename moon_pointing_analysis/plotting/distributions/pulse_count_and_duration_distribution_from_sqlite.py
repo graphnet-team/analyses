@@ -1,7 +1,9 @@
+import os, sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..')))
 import argparse
 import sqlite3 as sql
 from pandas import read_sql
-from plot_params import *
+from helper_functions.plot_params import * 
 
 
 parser = argparse.ArgumentParser(

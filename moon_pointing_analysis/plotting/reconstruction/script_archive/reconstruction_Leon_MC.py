@@ -1,6 +1,8 @@
-from plot_params import *
+import os, sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..')))
 import pandas as pd
 import argparse
+from helper_functions.plot_params import *
 
 parser = argparse.ArgumentParser(
     description="plotting the predicted zenith and azimuth vs truth."

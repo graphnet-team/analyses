@@ -1,18 +1,17 @@
-import sqlite3 as sql
-from plot_params import *
-from iminuit import Minuit
 import pandas as pd
-from pandas import read_sql
 import numpy as np
 from scipy import stats
 from scipy.stats import binom, poisson, norm
-import sys
+from helper_functions.plot_params import *
+from iminuit import Minuit
 
-sys.path.append("/groups/icecube/peter/workspace/External_functions")
-from Troels_external_functions import Chi2Regression
-from Troels_external_functions import (
+from helper_functions.external_functions import Chi2Regression
+from helper_functions.external_functions import (
     nice_string_output,
     add_text_to_ax,
+    set_var_if_None,
+    double_gaussian,
+    gaussian,
 )  # Useful functions to print fit results on figure
 
 
@@ -29,31 +28,6 @@ zenith, zenith_pred, = (
 zenith_std = 1 / np.sqrt(zenith_db.zenith_kappa_pred)
 zenith_diff = zenith_pred - zenith
 zenith_z = zenith_diff / zenith_std
-
-
-def set_var_if_None(var, x):
-    if var is not None:
-        return np.array(var)
-    else:
-        return np.ones_like(x)
-
-
-def double_gaussian(x, N1, N2, mu1, mu2, sigma1, sigma2):
-    return N1 * 1.0 / (sigma1 * np.sqrt(2 * np.pi)) * np.exp(
-        -0.5 * (x - mu1) ** 2 / sigma1**2
-    ) + N2 * 1.0 / (sigma2 * np.sqrt(2 * np.pi)) * np.exp(
-        -0.5 * (x - mu2) ** 2 / sigma2**2
-    )
-
-
-def gaussian(x, N, mu, sigma):
-    return (
-        N
-        * 1.0
-        / (sigma * np.sqrt(2 * np.pi))
-        * np.exp(-0.5 * (x - mu) ** 2 / sigma**2)
-    )
-
 
 ###
 
