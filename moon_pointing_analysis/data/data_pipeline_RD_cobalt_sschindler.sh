@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Notes: Contains a small scale test on hep, containing 3 I3-files
+# Description: Contains a small scale test on hep, containing 3 I3-files
 
 # to recreate the results, follow the steps below.
 # (1) designate directory containing I3-files, including gcd file.
@@ -23,6 +23,10 @@ mkdir -p ${report_directory};
 
 # save the report file to 
 report_location=${report_directory}${report_name}${TIMESTAMP}.out
+
+# Starts IceTray
+eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.1.0/setup.sh`
+/cvmfs/icecube.opensciencegrid.org/py3-v4.1.0/RHEL_7_x86_64/metaprojects/combo/stable/env-shell.sh
 
 # run script based on bash script location
 nohup python $(dirname -- "$(readlink -f "${BASH_SOURCE}")")/convert_i3_files.py \

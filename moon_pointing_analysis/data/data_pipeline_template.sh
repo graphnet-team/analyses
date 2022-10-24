@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Notes: <this is a template, add relevant description here>
+# Description: <this is a template, add relevant description here>
 
 # to recreate the results, follow the steps below by designating;
 # (1) directory containing I3-files, including gcd file.
@@ -21,14 +21,12 @@ TIMESTAMP=$(date "+%H%M%S")
 mkdir -p ${output_directory};
 mkdir -p ${report_directory};
 
-# pending testing from the above dir creation; the above code should not override... hopefully
-#if [ ! -d dir ] 
-#then
-#    mkdir -p dir;
-#fi
-
 # save the report file to 
 report_location=${report_directory}${report_name}${TIMESTAMP}.out
+
+# Starts IceTray
+eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.1.0/setup.sh`
+/cvmfs/icecube.opensciencegrid.org/py3-v4.1.0/RHEL_7_x86_64/metaprojects/combo/stable/env-shell.sh
 
 # run script
 nohup python $(dirname -- "$(readlink -f "${BASH_SOURCE}")")/convert_i3_files.py \
