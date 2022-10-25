@@ -141,4 +141,4 @@ dmypy.json
 *.pickle
 
 # Logs
-wandb/
+wandb/*
