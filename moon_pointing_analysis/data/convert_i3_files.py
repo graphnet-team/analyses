@@ -12,7 +12,7 @@ from graphnet.data.extractors import (
     I3FeatureExtractorIceCubeUpgrade,
     I3RetroExtractor,
     I3TruthExtractor,
-    I3FeatureExtractor,
+    I3FeatureExtractorIceCube86,
 )
 from graphnet.data.parquet import ParquetDataConverter
 from graphnet.data.sqlite import SQLiteDataConverter
@@ -46,11 +46,11 @@ parser.add_argument(
     "-o", "--out", dest="out", type=str, help="define the output path [str]"
 )
 parser.add_argument(
-    "-k",
-    "--keys",
-    dest="keys",
+    "-p",
+    "--pulsemaps",
+    dest="pulsemaps",
     nargs="+",
-    help="<Required> list of keys",
+    help="<Required> list of pulsemaps",
     required=True,
 )
 
@@ -65,17 +65,31 @@ def main_icecube86(backend: str):
 
     inputs = [args.path_to_db]
     outdir = args.out
+    workers = 10
 
     converter = CONVERTER_CLASS[backend](
         [
-            I3FeatureExtractor(keys=args.keys),
-            I3TruthExtractor(),
+            I3FeatureExtractorIceCube86(pulsemap="InIcePulses"),
+            I3FeatureExtractorIceCube86(pulsemap="InIceDSTPulses"),
+            I3FeatureExtractorIceCube86(pulsemap="SplitInIcePulses"),
+            I3FeatureExtractorIceCube86(pulsemap="SplitInIceDSTPulses"),
+            I3TruthExtractor()
         ],
+        #[
+        #    I3FeatureExtractorIceCube86(pulsemap=args.pulsemaps[0]),
+        #    I3FeatureExtractorIceCube86(pulsemap=args.pulsemaps[1]),
+        #    I3FeatureExtractorIceCube86(pulsemap=args.pulsemaps[2]),
+        #    I3FeatureExtractorIceCube86(pulsemap=args.pulsemaps[3]),
+        #    I3FeatureExtractorIceCube86(pulsemap=args.pulsemaps[4]),
+        #    I3TruthExtractor()
+        #],
+        #[I3FeatureExtractorIceCube86(pulsemap=pulsemap) for pulsemap in args.pulsemaps] + [I3TruthExtractor()],
         outdir,
+        workers=workers,
     )
     converter(inputs)
     if backend == "sqlite":
-        converter.merge_files(os.path.join(outdir, "merged"))
+        converter.merge_files(os.path.join(outdir, "merged_"+str(args.pulsemaps).replace(", ","_").replace("[","").replace("]","").replace("'","")))
 
 
 def main_icecube_upgrade(backend: str):
