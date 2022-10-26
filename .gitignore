@@ -136,3 +136,9 @@ dmypy.json
 
 # report types
 *.out
+
+# Pickle types
+*.pickle
+
+# Logs
+wandb/*

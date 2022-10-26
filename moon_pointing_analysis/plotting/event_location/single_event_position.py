@@ -14,7 +14,7 @@ parser.add_argument(
     dest="path_to_db",
     type=str,
     help="path to database [str]",
-    required=True,
+    default="/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/real_data/data_with_reco/moonL4_segspline_exp13_01_merged_with_time_and_reco_and_new_pulsemap.db",
 )
 parser.add_argument(
     "-o",
@@ -22,7 +22,7 @@ parser.add_argument(
     dest="output",
     type=str,
     help="the output path [str]",
-    required=True,
+    default="/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/plots/event_location",
 )
 parser.add_argument(
     "-p",
@@ -30,7 +30,7 @@ parser.add_argument(
     dest="pulsemap",
     type=str,
     help="the pulsemap used [str]",
-    required=True,
+    default="TWSRTHVInIcePulses",
 )
 args = parser.parse_args()
 
@@ -47,25 +47,28 @@ with sql.connect(args.path_to_db) as con:
     sql_data = read_sql(query, con)
 
 event_numbers = sql_data["event_no"].unique()
-specific_event = sql_data[sql_data["event_no"] == event_numbers[0]]
 
-fig = plt.figure()
-ax = plt.axes(projection="3d")
+for i in [205, 207, 219, 494, 584, 807, 939, 1187, 1214, 1271]:
+    event = i
+    specific_event = sql_data[sql_data["event_no"] == event]
 
-# Creating plot
-dom = ax.scatter3D(
-    specific_event["dom_x"],
-    specific_event["dom_y"],
-    specific_event["dom_z"],
-    c=specific_event["dom_time"],
-    cmap="coolwarm",
-    s=25, alpha=1
-)  # TODO; s should vary in size like the official plots
-colorbar(dom)
-ax.set_xlabel("x position")
-ax.set_ylabel("x position")
-ax.set_zlabel("Z Label")
-plt.title(
-    f"simple 3D scatter plot of dom positions for event #{event_numbers[0]}"
-)
-plt.savefig(args.output + "single_event_position.png")
+    fig = plt.figure()
+    ax = plt.axes(projection="3d")
+
+    # Creating plot
+    doms = ax.scatter3D(
+        specific_event["dom_x"],
+        specific_event["dom_y"],
+        specific_event["dom_z"],
+        c=specific_event["dom_time"],
+        cmap="coolwarm",
+        s=25, alpha=1
+    )  # TODO; s should vary in size like the official plots
+    plt.colorbar(doms, ax=ax)
+    ax.set_xlabel("x position")
+    ax.set_ylabel("x position")
+    ax.set_zlabel("Z Label")
+    plt.title(
+        f"simple 3D scatter plot of dom positions for event #{event_numbers[0]}"
+     )   
+    plt.savefig(args.output + "single_event_position_normal" + str(event) +  ".png")
