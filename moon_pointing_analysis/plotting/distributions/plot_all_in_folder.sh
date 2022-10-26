@@ -31,14 +31,16 @@ mkdir -p ${report_directory};
 # save the report file to 
 report_location=${report_directory}${report_name}.out
 
-nohup python ${bash_directory}/distribution_from_sqlite.py -db \
-${database_directory} \
--o ${output_directory} \
--p ${pulsemap} \
-> ${report_location}
-
+echo "plotting pulse count and distributions"
 nohup python ${bash_directory}/pulse_count_and_duration_distribution_from_sqlite.py \
 -db ${database_directory} \
 -o ${output_directory} \
 -p ${pulsemap} \
-> ${report_location}
+> ${report_location} &
+
+echo "plotting histogram of all features"
+nohup python ${bash_directory}/all_features_histogram.py \
+-db ${database_directory} \
+-o ${output_directory} \
+-p ${pulsemap} \
+> ${report_location} &
