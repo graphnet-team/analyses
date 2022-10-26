@@ -36,7 +36,7 @@ mkdir -p ${report_directory};
 # save the report file to 
 report_location=${report_directory}${report_name}.out
 
-nohup python ${bash_directory}/reconstruction_both_angles.py \
+nohup python ${bash_directory}/individual_zenith_kappa_reconstruction.py \
 --database ${database_directory[@]} \
 --bins ${bins} \
 -o ${output_directory} \
