@@ -56,7 +56,7 @@ for i in [205, 207, 219, 494, 584, 807, 939, 1187, 1214, 1271]:
     ax = plt.axes(projection="3d")
 
     # Creating plot
-    hej = ax.scatter3D(
+    doms = ax.scatter3D(
         specific_event["dom_x"],
         specific_event["dom_y"],
         specific_event["dom_z"],
@@ -64,7 +64,7 @@ for i in [205, 207, 219, 494, 584, 807, 939, 1187, 1214, 1271]:
         cmap="coolwarm",
         s=25, alpha=1
     )  # TODO; s should vary in size like the official plots
-    plt.colorbar(hej, ax=ax)
+    plt.colorbar(doms, ax=ax)
     ax.set_xlabel("x position")
     ax.set_ylabel("x position")
     ax.set_zlabel("Z Label")
@@ -72,4 +72,3 @@ for i in [205, 207, 219, 494, 584, 807, 939, 1187, 1214, 1271]:
         f"simple 3D scatter plot of dom positions for event #{event_numbers[0]}"
      )   
     plt.savefig(args.output + "single_event_position_normal" + str(event) +  ".png")
-
