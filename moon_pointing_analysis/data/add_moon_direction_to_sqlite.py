@@ -11,8 +11,8 @@ from icecube import astro
 from icecube.dataclasses import I3Time
 
 # data pathing
-indir = "/data/user/mholm/data/moonL4_segspline_exp13_01_redo_00001.db"
-outdir = "/data/user/mholm/data/MoonL4_with_time/"
+indir = "/data/user/pa000/MoonPointing/sschindler_data_with_reco_and_new_pulsemap/Merged_database/moonL4_segspline_exp13_01_merged_with_time_and_reco_and_new_pulsemap.db"
+outdir = "/data/user/pa000/MoonPointing/sschindler_data_with_reco_and_new_pulsemap/Merged_database_with_time"
 
 
 def moonDirection(mjd):
@@ -44,7 +44,7 @@ with sql.connect(indir) as con:
         print("failed to create table.")
 
     # load data
-    query = """SELECT event_time FROM InIceDSTPulses;"""
+    query = """SELECT event_time FROM TWSRTHVInIcePulses;"""
     sql_data = read_sql(query, con)
     print("event_times has been read in from database")
 

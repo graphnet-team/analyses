@@ -72,6 +72,7 @@ def main_icecube86(backend: str):
             I3TruthExtractor(),
         ],
         outdir,
+        gcd_rescue=None,
     )
     converter(inputs)
     if backend == "sqlite":
