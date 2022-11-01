@@ -11,7 +11,9 @@ database_directory=/groups/icecube/petersen/GraphNetDatabaseRepository/moon_poin
 pulsemap=TWSRTHVInIcePulses
 # (3) to run this shell script; copy file path and execute "bash <file_path>"
 
-
+sigma=2
+cutoff=0.7
+log=5000
 
 
 
@@ -39,8 +41,11 @@ nohup python ${bash_directory}/pulse_count_and_duration_distribution_from_sqlite
 > ${report_location} &
 
 echo "plotting histogram of all features"
-nohup python ${bash_directory}/all_features_histogram.py \
+nohup python ${bash_directory}/all_features_1Dhistogram.py \
 -db ${database_directory} \
 -o ${output_directory} \
--p ${pulsemap} \
-> ${report_location} &
+-s ${sigma} \
+-c ${cutoff} \
+-l ${log} \
+> ${report_location} \
+2> ${report_directory}${report_name}.err &
