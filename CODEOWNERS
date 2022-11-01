@@ -2,7 +2,7 @@
 # Meaning the primary owner of the project is listed first.
 # Listed last is the lead for that particular sub-group.
 
-* @asogaard
+* @RasmusOrsoe @asogaard
 
 # Specific analyses
 upgrade_neutrino_reconstruction/ @asogaard
