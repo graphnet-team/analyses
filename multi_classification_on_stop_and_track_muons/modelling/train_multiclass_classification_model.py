@@ -1,8 +1,11 @@
+from distutils.log import debug
+import logging
 import os
 
 from pytorch_lightning import Trainer
 from pytorch_lightning.callbacks import EarlyStopping
 from pytorch_lightning.loggers import WandbLogger
+
 import torch
 from torch.optim.adam import Adam
 from torch.nn.functional import one_hot
@@ -33,6 +36,8 @@ def multiclass_transform(target, num_classes=3):
     return one_hot(torch.tensor([pid_transform[np.abs(value)] for value in target]), num_classes)
 
 logger = get_logger()
+# set increased verbose information when debugging.
+logger.setLevel(logging.DEBUG)
 
 # Configurations
 torch.multiprocessing.set_sharing_strategy("file_system")
@@ -92,7 +97,7 @@ parser.add_argument(
     dest="event_numbers",
     type=int,
     help="the number of muons to train on; if too high will take all available. [int]",
-    default=50,
+    default=100,
 )
 parser.add_argument(
     "-g",
@@ -100,7 +105,7 @@ parser.add_argument(
     dest="gpu",
     type=int,
     help="<required> the name for the model. [str]",
-    default=1# required=True,
+    default=0# required=True,
 )
 parser.add_argument(
     "-b",
@@ -134,7 +139,7 @@ parser.add_argument(
     "--run_name",
     dest="run_name",
     type=str,
-    help="<required> the name for the model. [str]",
+    help="the name for the model. [str]",
     default="debug"
     # required=True,
 )
@@ -143,7 +148,7 @@ parser.add_argument(
     "--accelerator",
     dest="accelerator",
     type=str,
-    help="<required> the name for the model. [str]",
+    help="the name for the model. [str]",
     default="cpu"
     # required=True,
 )
@@ -204,10 +209,10 @@ def main():
         global_pooling_schemes=["min", "max", "mean", "sum"],
     )
     task = MulticlassClassificationTask(
-        #nb_inputs=3,
+        nb_classes=3,
         hidden_size=gnn.nb_outputs,
         target_labels=config["target"],
-        loss_function=CrossEntropyLoss(),
+        loss_function=CrossEntropyLoss(options=({1:0,-1:0,12:2,-12:2,13:1,-13:1,14:2,-14:2,16:2,-16:2})),
     )
     model = StandardModel(
         detector=detector,
