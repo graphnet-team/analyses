@@ -5,6 +5,7 @@ import sqlite3 as sql
 import argparse
 from pandas import read_sql
 from helper_functions.plot_params import *
+import numpy as np
 
 parser = argparse.ArgumentParser(
     description="processing i3 files to sqlite3 databases"
@@ -15,7 +16,7 @@ parser.add_argument(
     dest="path_to_db",
     type=str,
     help="path to database [str]",
-    required=True,
+    default = "/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/monte_carlo/Leon_MC_data/last_one_lvl3MC.db",
 )
 parser.add_argument(
     "-o",
@@ -23,33 +24,51 @@ parser.add_argument(
     dest="output",
     type=str,
     help="the output path [str]",
-    required=True,
+    default = "/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/plots/distributions/",
 )
-parser.add_argument(
-    "-p",
-    "--pulsemap",
-    dest="pulsemap",
-    type=str,
-    help="the pulsemap used [str]",
-    required=True,
-)
+
 args = parser.parse_args()
+
+tag = 'Leon_MC_data_'
 
 # dataloading
 with sql.connect(args.path_to_db) as con:
     query = """
     SELECT
-        charge, dom_time, dom_x, dom_y, dom_z, event_no, pmt_area, rde, width
+        azimuth, zenith, energy, pid, event_no
     FROM 
-        %s;
-    """ % (
-        args.pulsemap
-    )
+        truth 
+    LIMIT 
+        10000000;
+    """ 
     sql_data = read_sql(query, con)
 
+print(sql_data['pid'].unique())
+pids = [13,14,12,16]
+
 plt.figure()
-plt.hist(sql_data["charge"], bins=10)
+for i in pids:
+    print(i)
+    if i==-1:
+        break
+    plt.hist(np.log10(np.array(sql_data[np.abs(sql_data['pid'])==i]["energy"])), bins=100,alpha=0.5,label=f'{i}')
 plt.yscale("log")
-plt.title("input data: Charge")
+plt.title("input data: Energy in log10")
 plt.legend()
-plt.savefig(args.output + "L2_2018_1.png")
+plt.savefig(args.output + tag + 'energy' ".png")
+
+plt.figure()
+for i in pids:
+    plt.hist(sql_data[np.abs(sql_data['pid'])==i]["azimuth"]*180/np.pi, bins=100,alpha=0.5,label=f'{i}')
+plt.yscale("log")
+plt.title("input data: azimuth")
+plt.legend()
+plt.savefig(args.output + tag + 'azimuth' ".png")
+
+plt.figure()
+for i in pids:
+    plt.hist(sql_data["zenith"][np.abs(sql_data['pid'])==i]*180/np.pi, bins=100,alpha=0.5,label=f'{i}')
+plt.yscale("log")
+plt.title("input data: zenith")
+plt.legend()
+plt.savefig(args.output + tag + 'zenith' ".png")

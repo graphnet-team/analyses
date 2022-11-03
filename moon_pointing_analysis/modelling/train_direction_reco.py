@@ -11,7 +11,7 @@ from graphnet.data.sqlite.sqlite_selection import (
     get_equal_proportion_neutrino_indices,
     get_desired_event_numbers,
 )
-from graphnet.models import Model
+from graphnet.models import StandardModel
 from graphnet.models.detector.icecube import IceCubeDeepCore
 from graphnet.models.gnn.dynedge import DynEdge
 from graphnet.models.graph_builders import KNNGraphBuilder
@@ -30,11 +30,11 @@ import argparse
 # logger = get_logger()
 
 parser = argparse.ArgumentParser(description='processing i3 files to sqlite3 databases')
-parser.add_argument('--db', dest='path_to_db', type=str, help='path to database [str]',default="/groups/icecube/peter/storage/MoonPointing/MC_data_for_training/Gerrits_Data/merged.db")
-parser.add_argument('--pulse', dest='pulsemap', type=str, help='pulsemap type contained in the i3 file [str].',default="InIceDSTPulses")
+parser.add_argument('--db', dest='path_to_db', type=str, help='path to database [str]',default="/groups/icecube/petersen/GraphNetDatabaseRepository/Leon_MC_data/last_one_lvl3MC.db")
+parser.add_argument('--pulse', dest='pulsemap', type=str, help='pulsemap type contained in the i3 file [str].',default="SRTInIcePulses")
 parser.add_argument('--outdir', dest='out', type=str, help='define the output path [str]',default="/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/trained_models")
-parser.add_argument('--gpu_no', dest='gpu', type=int, help='define the GPU to run on [int]',default=1)
-parser.add_argument('--runname', dest='runname', type=str, help='define the run name [str]',default="Test")
+parser.add_argument('--gpu_no', dest='gpu', type=int, help='define the GPU to run on [int]',default=0)
+parser.add_argument('--runname', dest='runname', type=str, help='define the run name [str]',default="Leon_mu_neutrino_1000000_samples_SRTInIcePulses")
 
 
 args = parser.parse_args()
@@ -45,13 +45,15 @@ torch.multiprocessing.set_sharing_strategy("file_system")
 
 # Constants
 features = FEATURES.DEEPCORE
-features = ["position__x",
-        "position__y",
-        "position__z",
-        "time",
-        "charge",]
-        #"rde",
-        #"pmt_area",]
+
+# features = ["position__x",
+#        "position__y",
+#        "position__z",
+#        "time",
+#        "charge",]
+#        "rde",
+#        "pmt_area",]
+
 truth = TRUTH.DEEPCORE[:-1]
 
 # Make sure W&B output directory exists
@@ -76,8 +78,8 @@ def train(config):
     # train_selection, _ = get_equal_proportion_neutrino_indices(config["db"])
     # train_selection = train_selection[0:]#config["max_events"]]
     train_selection = get_desired_event_numbers(
-        config["db"], desired_size=50000, fraction_muon=1
-    )
+        config["db"], desired_size=100000, fraction_nu_mu=1
+    ) #+ get_desired_event_numbers(config['db'],desired_size=50000,fraction_nu_mu=1)
     #    logger.info(f"features: {features}")
     #    logger.info(f"truth: {truth}")
 
@@ -105,6 +107,7 @@ def train(config):
     else:
         gnn = DynEdge(
             nb_inputs=detector.nb_outputs,
+            global_pooling_schemes=["min", "max", "mean", "sum"],
         )
     if config["target"] == "zenith":
         task = ZenithReconstructionWithKappa(
@@ -119,7 +122,7 @@ def train(config):
             loss_function=VonMisesFisher2DLoss(),
         )
 
-    model = Model(
+    model = StandardModel(
         detector=detector,
         gnn=gnn,
         tasks=[task],
@@ -192,7 +195,7 @@ def main():
             "accelerator": "gpu",
             "devices": [args.gpu],
             "target": target,
-            "n_epochs": 20,
+            "n_epochs": 50,
             "patience": 5,
             "archive": archive,
             "run_name": run_name,

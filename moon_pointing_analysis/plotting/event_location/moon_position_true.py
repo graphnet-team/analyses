@@ -51,8 +51,8 @@ with sql.connect(args.path_to_db) as con:
     SELECT
         event_time
     FROM 
-        InIceDSTPulses;
-    """
+        %s;
+    """ %args.pulsemap
     sql_data["time"] = read_sql(query_time, con)
 
 # define binning

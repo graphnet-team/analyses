@@ -1,6 +1,6 @@
 import sqlite3 as sql
-from analyses.moon_pointing_analysis.plotting.helper_functions.plot_params import *
-
+#from ..helper_functions.plot_params import *
+import matplotlib.pyplot as plt
 import pandas as pd
 from pandas import read_sql
 import numpy as np
@@ -23,7 +23,14 @@ good_selection_mask = (
     * np.array(zenith_std < 1)
     * np.array(azimuth_std < 1)
 )  # np.array(zenith> 0.1)*np.array(zenith_std<1)*np.array(azimuth_std<1)
-bad_selection_mask = np.logical_not(good_selection_mask)
+bad_selection_mask = np.array(np.logical_not(good_selection_mask))
+
+import csv
+with open ("bad_selection.csv",'w') as file:
+    writer = csv.writer(file)
+    for i in range(len(bad_selection_mask)):
+        if bad_selection_mask[i] == True:
+            writer.writerow([i])
 
 plot_first = len(zenith)
 

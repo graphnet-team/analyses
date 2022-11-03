@@ -7,12 +7,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-outdir = '/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/plots/comparison_to_moon/'
+outdir = '/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/plots/comparison_to_moon/_Leon_mu_nu_1_million_'
 
 real_data = "/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/real_data/data_with_reco/moonL4_segspline_exp13_01_merged_with_time_and_reco_and_new_pulsemap.db"
 
-prediction_zenith_dir = "/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/Inference/zenith_Leon_MC_TWSRTHV_predictions.csv"
-prediction_azimuth_dir = "/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/Inference/azimuth_Leon_MC_TWSRTHV_predictions.csv"
+prediction_zenith_dir = "/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/Inference/zenith_Leon_MC_mu_nu_1000000_TWSRTHV_predictions.csv"
+prediction_azimuth_dir = "/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/Inference/azimuth_Leon_MC_mu_nu_1000000_TWSRTHV_predictions.csv"
 prediction_zenith_data = pd.read_csv(prediction_zenith_dir).sort_values('event_no')#.reset_index(drop = True)
 prediction_azimuth_data = pd.read_csv(prediction_azimuth_dir).sort_values('event_no')#.reset_index(drop = True)
 #print(prediction_zenith_data.head(10))

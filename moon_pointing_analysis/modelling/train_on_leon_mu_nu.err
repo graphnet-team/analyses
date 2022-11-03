@@ -1,0 +1,395 @@
+nohup: ignoring input
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type            | Params
+----------------------------------------------
+0 | _detector | IceCubeDeepCore | 0     
+1 | _gnn      | DynEdge         | 1.4 M 
+2 | _tasks    | ModuleList      | 258   
+----------------------------------------------
+1.4 M     Trainable params
+0         Non-trainable params
+1.4 M     Total params
+5.530     Total estimated model params size (MB)
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name      | Type            | Params
+----------------------------------------------
+0 | _detector | IceCubeDeepCore | 0     
+1 | _gnn      | DynEdge         | 1.4 M 
+2 | _tasks    | ModuleList      | 258   
+----------------------------------------------
+1.4 M     Trainable params
+0         Non-trainable params
+1.4 M     Total params
+5.530     Total estimated model params size (MB)
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f32487dd310>
+Traceback (most recent call last):
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1358, in __del__
+    self._shutdown_workers()
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 1341, in _shutdown_workers
+    if w.is_alive():
+  File "/groups/icecube/peter/anaconda3/envs/graphnet/lib/python3.8/multiprocessing/process.py", line 160, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]

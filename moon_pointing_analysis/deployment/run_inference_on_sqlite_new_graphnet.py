@@ -9,15 +9,12 @@ from pytorch_lightning.callbacks import EarlyStopping
 import torch
 from torch.optim.adam import Adam
 
-from graphnet.components.loss_functions import (
-    LogCoshLoss,
-    VonMisesFisher2DLoss,
-)
+from graphnet.training.loss_functions import VonMisesFisher2DLoss
 from graphnet.data.constants import FEATURES, TRUTH
 from graphnet.data.sqlite.sqlite_selection import (
     get_equal_proportion_neutrino_indices,
 )
-from graphnet.models import Model
+from graphnet.models import StandardModel
 from graphnet.models.detector.icecube import IceCubeDeepCore
 from graphnet.models.gnn import DynEdge
 from graphnet.models.graph_builders import KNNGraphBuilder
@@ -25,10 +22,10 @@ from graphnet.models.task.reconstruction import (
     ZenithReconstructionWithKappa,
     AzimuthReconstructionWithKappa,
 )
-from graphnet.models.training.callbacks import ProgressBar, PiecewiseLinearLR
-from graphnet.models.training.utils import (
+from graphnet.training.callbacks import ProgressBar, PiecewiseLinearLR
+from graphnet.training.utils import (
     get_predictions,
-    make_dataloader,  # make_train_validation_dataloader
+    make_dataloader,
     save_results,
 )
 from graphnet.utilities.logging import get_logger
@@ -63,8 +60,8 @@ def main(
         "pulsemap": "TWSRTHVInIcePulses",
         "batch_size": 512,
         "num_workers": 10,
-        "accelerator": "cpu",
-        "devices": 1,
+        "accelerator": "gpu",
+        "devices": [0],
         "target": "zenith",
         "n_epochs": 1,
         "patience": 1,
@@ -95,6 +92,7 @@ def main(
     )
     gnn = DynEdge(
         nb_inputs=detector.nb_outputs,
+        global_pooling_schemes=["min", "max", "mean", "sum"],
     )
     if config["target"] == "zenith":
         task = ZenithReconstructionWithKappa(
@@ -109,7 +107,7 @@ def main(
             loss_function=VonMisesFisher2DLoss(),
         )
 
-    model = Model(
+    model = StandardModel(
         detector=detector,
         gnn=gnn,
         tasks=[task],
@@ -150,7 +148,7 @@ def main(
 
     # save_results(config["db"], run_name, results, archive, model)
     results.to_csv(
-        output_folder + "/{}_Leon_MC_TWSRTHV_predictions.csv".format(config["target"])
+        output_folder + "/{}_Leon_MC_mu_nu_1000000_TWSRTHV_predictions.csv".format(config["target"])
     )
 
 
@@ -159,6 +157,6 @@ if __name__ == "__main__":
 
     input_db = "/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/real_data/data_with_reco/moonL4_segspline_exp13_01_merged_with_time_and_reco_and_new_pulsemap.db"
     output_folder = "/groups/icecube/peter/storage/MoonPointing/predictions"
-    model_path = "/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/trained_models/dynedge_zenith_example/dynedge_zenith_example_state_dict.pth"
+    model_path = "/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/trained_models/last_one_lvl3MC/dynedge_zenith_Leon_mu_neutrino_1000000_samples_SRTInIcePulses/dynedge_zenith_Leon_mu_neutrino_1000000_samples_SRTInIcePulses_state_dict.pth"
 
     main(input_db, output_folder, model_path)
