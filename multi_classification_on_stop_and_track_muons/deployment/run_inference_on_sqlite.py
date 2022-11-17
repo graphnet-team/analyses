@@ -1,37 +1,38 @@
 """Running inference on GraphSAGE-cleaned pulses in IceCube-Upgrade."""
 
-import logging
+import os
 
 from pytorch_lightning import Trainer
 from pytorch_lightning.callbacks import EarlyStopping
-
-# from pytorch_lightning.loggers import WandbLogger
+from pytorch_lightning.loggers import WandbLogger
 import torch
 from torch.optim.adam import Adam
+from torch.nn.functional import one_hot, softmax
 
-from graphnet.components.loss_functions import (
-    LogCoshLoss,
-    VonMisesFisher2DLoss,
-)
+
+from graphnet.training.loss_functions import CrossEntropyLoss
 from graphnet.data.constants import FEATURES, TRUTH
 from graphnet.data.sqlite.sqlite_selection import (
+    get_desired_event_numbers,
     get_equal_proportion_neutrino_indices,
 )
-from graphnet.models import Model
+from graphnet.models import StandardModel
 from graphnet.models.detector.icecube import IceCubeDeepCore
 from graphnet.models.gnn import DynEdge
 from graphnet.models.graph_builders import KNNGraphBuilder
-from graphnet.models.task.reconstruction import (
-    ZenithReconstructionWithKappa,
-    AzimuthReconstructionWithKappa,
-)
-from graphnet.models.training.callbacks import ProgressBar, PiecewiseLinearLR
-from graphnet.models.training.utils import (
+from graphnet.models.task.reconstruction import MulticlassClassificationTask
+from graphnet.training.callbacks import ProgressBar, PiecewiseLinearLR
+from graphnet.training.utils import (
     get_predictions,
-    make_dataloader,  # make_train_validation_dataloader
+    make_train_validation_dataloader,
+    make_dataloader,
     save_results,
 )
 from graphnet.utilities.logging import get_logger
+
+import numpy as np
+import pandas as pd
+import csv
 
 # logger = get_logger(logging.DEBUG)
 
@@ -60,17 +61,17 @@ def main(
     # Configuration
     config = {
         "db": input_path,
-        "pulsemap": "InIceDSTPulses",
+        "pulsemap": "SplitInIcePulses",
         "batch_size": 512,
         "num_workers": 10,
         "accelerator": "gpu",
         "devices": [0],
-        "target": "zenith",
+        "target": "pid",
         "n_epochs": 1,
         "patience": 1,
     }
     archive = output_path
-    run_name = "dynedge_trained_on_leon_MC_{}_predict_azimuth".format(
+    run_name = "dynedge_trained_on_leon_RD_{}_predict_first".format(
         config["target"]
     )
 
@@ -95,27 +96,33 @@ def main(
     )
     gnn = DynEdge(
         nb_inputs=detector.nb_outputs,
+        global_pooling_schemes=["min", "max", "mean", "sum"],
     )
-    if config["target"] == "zenith":
-        task = ZenithReconstructionWithKappa(
-            hidden_size=gnn.nb_outputs,
-            target_labels=config["target"],
-            loss_function=VonMisesFisher2DLoss(),
-        )
-    elif config["target"] == "azimuth":
-        task = AzimuthReconstructionWithKappa(
-            hidden_size=gnn.nb_outputs,
-            target_labels=config["target"],
-            loss_function=VonMisesFisher2DLoss(),
-        )
-
-    model = Model(
+    task = MulticlassClassificationTask(
+        #nb_inputs=3,
+        hidden_size=gnn.nb_outputs,
+        target_labels=config["target"],
+        loss_function=CrossEntropyLoss(),
+        transform_inference=lambda x: softmax(x,dim=-1),
+    )
+    model = StandardModel(
         detector=detector,
         gnn=gnn,
         tasks=[task],
         optimizer_class=Adam,
         optimizer_kwargs={"lr": 1e-03, "eps": 1e-03},
         scheduler_class=PiecewiseLinearLR,
+        scheduler_kwargs={
+            "milestones": [
+                0,
+                len(50) / 2,
+                len(50) * config["n_epochs"],
+            ],
+            "factors": [1e-2, 1, 1e-02],
+        },
+        scheduler_config={
+            "interval": "step",
+        },
     )
 
     # Training model
@@ -133,7 +140,7 @@ def main(
         max_epochs=config["n_epochs"],
         callbacks=callbacks,
         log_every_n_steps=1,
-        # logger=wandb_logger,
+        #logger=wandb_logger,
     )
 
     # Load model
@@ -150,15 +157,15 @@ def main(
 
     # save_results(config["db"], run_name, results, archive, model)
     results.to_csv(
-        output_folder + "/{}_Leon_MC_results.csv".format(config["target"])
+        output_folder + "/{}_Leon_RD_results_first.csv".format(config["target"])
     )
 
 
 # Main function call
 if __name__ == "__main__":
 
-    input_db = "/groups/icecube/peter/storage/MoonPointing/data/Sschindler_data_L4/Merged_database/Merged_database.db"
-    output_folder = "/groups/icecube/peter/storage/MoonPointing/data/Sschindler_data_L4/Merged_database"
-    model_path = "/groups/icecube/peter/storage/MoonPointing/Models/Leon_Muon_data_MC/last_one_lvl3MC/dynedge_zenith_Leon_muon_data_MC/dynedge_zenith_Leon_muon_data_MC_state_dict.pth"
+    input_db = "/groups/icecube/leonbozi/work2/data_real/lvl3_dbs_real/last_one_lvl3/data/last_one_lvl3.db"
+    output_folder = "/groups/icecube/petersen/GraphNetDatabaseRepository/multi_classification_stop_track_muon/Inference"
+    model_path = "/groups/icecube/peter/storage/Multiclassification/Real/last_one_lvl3MC/dynedge_pid_Real_run_21.5_mill_equal_frac_/dynedge_pid_Real_run_21.5_mill_equal_frac__state_dict_first.pth"
 
     main(input_db, output_folder, model_path)
