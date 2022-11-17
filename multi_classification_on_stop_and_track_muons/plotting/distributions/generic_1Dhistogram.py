@@ -1,4 +1,5 @@
-""" This script is meant purely as an investigation tool of features in a dataset. """
+""" Will plot all tables and their features in a .db, as well as all features in a .csv.
+    This script is meant purely as an investigation tool of features in a dataset. """
 
 import os, sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..')))
@@ -10,9 +11,12 @@ import io
 from pandas import read_sql
 from helper_functions.plot_params import * 
 
-def create_save_directory(args, table):
+def create_save_directory(args, table=None):
     folder_name=args.path_to_db[:-3].split('/')[-1]
-    save_dir = args.output + folder_name + "/" + table + "/"
+    if table == None:
+        save_dir = args.output + folder_name + "/"
+    else:
+        save_dir = args.output + folder_name + "/" + table + "/"
     os.makedirs(save_dir, exist_ok=True)
     return save_dir
 
@@ -188,26 +192,46 @@ elif ext == "csv":
         feature_data = feature_data.drop(extra_index, axis=1)
 
     # create a folder to save results into
-    folder_name=args.path_to_db[:-4].split('/')[-1]
-    save_dir = args.output + folder_name + "/"
-    os.makedirs(save_dir, exist_ok=True)
+    save_dir = create_save_directory(args)
 
     for feature in feature_data:
         print(f"plotting {feature}.")
         try:
-            x = feature_data[feature]
-            bin_range = int((max(x)) - min(x))+1
-            if bin_range > 50000 and feature_data[feature].all() > 0:
-                bin_range = 25
-            counts, bins = np.histogram(x, bins=bin_range)
+            # preliminary histogram counts and binning
+            counts, bins = np.histogram(feature_data[feature], bins='auto')
+            # tuning attempt to reduce excess zeros
+            counts, bins, _ = tune_bins(data=feature_data[feature], counts=counts, bins=bins, args=args)
+
+            df_outliers, df_no_outliers = outlier(feature_data, feature, sigma=args.sigma)
             
-            plt.figure()
-            plt.hist(counts, bins=bins)
-            plt.title(f"{feature}")
-            if counts.mean() > 50000:
-                plt.yscale("log")
+            fig, ax = plt.subplots(3,1,figsize=(25, 15))
+
+            ax[0].set_title(f"full data")
+            ax[0].hist(feature_data[feature], bins=bins)
+            ax[0].set_xlabel(feature)
+            ax[0].set_ylabel("count")
+            if counts.max() > args.log:
+                ax[0].set_yscale("log")
+
+            bin_range = custom_bin_range(df_no_outliers)
+            counts1, bins1 = np.histogram(df_no_outliers, bins=bin_range)
+            ax[1].set_title(f"outliers under {args.sigma} sigmas")
+            ax[1].hist(df_no_outliers, bins=bins1)
+            ax[1].set_xlabel(feature)
+            ax[1].set_ylabel("count")
+            if counts.max() > args.log:
+                ax[1].set_yscale("log")
+
+            bin_range = custom_bin_range(df_outliers)
+            counts2, bins2 = np.histogram(df_outliers, bins=bin_range)
+            ax[2].set_title(f"outliers over {args.sigma} sigmas")
+            ax[2].hist(df_outliers, bins=bins2)
+            ax[2].set_xlabel(feature)
+            ax[2].set_ylabel("count")
+            if counts.max() > args.log:
+                ax[2].set_yscale("log")
+
             plt.savefig(save_dir+ feature + ".png")
-            plt.close() # plots are saved in memory, closing to conserve
         except:
             print(f"plotting {feature} failed, data type was of type: {type(feature_data[feature][0])}")
 

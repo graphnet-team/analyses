@@ -5,7 +5,7 @@ bash_directory=$(dirname -- "$(readlink -f "${BASH_SOURCE}")") # !do not alter!
 
 # to recreate the results, follow the steps below.
 # (1) designate directory containing database; data described in folder.
-database_directory=/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/monte_carlo/11069/Level2_nugen_numu_IC86.2012.011069_InIcePulses_InIceDSTPulses_SplitInIcePulses_SplitInIceDSTPulses_SRTInIcePulses.db
+database_directory=/groups/icecube/petersen/GraphNetDatabaseRepository/multi_classification_on_stop_and_track_muons/
 # (2) to run this shell script; copy file path and execute "bash <file_path>"
 
 sigma=2
@@ -30,7 +30,7 @@ mkdir -p ${report_directory};
 report_location=${report_directory}${report_name}.out
 
 echo "plotting histogram of all features"
-nohup python ${bash_directory}/all_features_1Dhistogram.py \
+nohup python ${bash_directory}/generic_1Dhistogram.py \
 -db ${database_directory} \
 -o ${output_directory} \
 -s ${sigma} \

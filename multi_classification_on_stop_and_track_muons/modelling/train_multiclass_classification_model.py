@@ -1,8 +1,11 @@
+from distutils.log import debug
+import logging
 import os
 
 from pytorch_lightning import Trainer
 from pytorch_lightning.callbacks import EarlyStopping
 from pytorch_lightning.loggers import WandbLogger
+
 import torch
 from torch.optim.adam import Adam
 from torch.nn.functional import one_hot, softmax
@@ -38,6 +41,8 @@ print('All is imported')
 #    return one_hot(torch.tensor([pid_transform[np.abs(value)] for value in target]), num_classes)
 
 logger = get_logger()
+# set increased verbose information when debugging.
+logger.setLevel(logging.DEBUG)
 
 # Configurations
 torch.multiprocessing.set_sharing_strategy("file_system")
@@ -105,7 +110,7 @@ parser.add_argument(
     dest="gpu",
     type=int,
     help="<required> the name for the model. [str]",
-    default=1# required=True,
+    default=0# required=True,
 )
 parser.add_argument(
     "-b",
@@ -230,7 +235,7 @@ def main():
         global_pooling_schemes=["min", "max", "mean", "sum"],
     )
     task = MulticlassClassificationTask(
-        #nb_inputs=3,
+        nb_classes=3,
         hidden_size=gnn.nb_outputs,
         target_labels=config["target"],
         loss_function=CrossEntropyLoss(),
