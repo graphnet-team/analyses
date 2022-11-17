@@ -6,10 +6,15 @@ bash_directory=$(dirname -- "$(readlink -f "${BASH_SOURCE}")")
 
 # to recreate the results, follow the steps below.
 # (1) designate directory containing database; data described in folder.
-database_directory=/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/real_data/data_with_reco/moonL4_segspline_exp13_01_merged_with_time_and_reco_and_new_pulsemap.db
+database_directory=(\
+/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/trained_models/dynedge_azimuth_example/results.csv \
+/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/trained_models/dynedge_zenith_example/results.csv \
+)
 # (2) designate the pulsemap used.
 pulsemap=TWSRTHVInIcePulses
-# (3) to run this shell script; copy file path and execute "bash <file_path>"
+# (3) specifically for the heatmap, define the number of bins.
+bins=500
+# (4) to run this shell script; copy file path and execute "bash <file_path>"
 
 
 
@@ -31,16 +36,15 @@ mkdir -p ${report_directory};
 # save the report file to 
 report_location=${report_directory}${report_name}.out
 
-echo "plotting pulse count and distributions"
-nohup python ${bash_directory}/pulse_count_and_duration_distribution_from_sqlite.py \
--db ${database_directory} \
+nohup python ${bash_directory}/uncertainty_test.py \
+--database ${database_directory[@]} \
+--bins ${bins} \
 -o ${output_directory} \
 -p ${pulsemap} \
-> ${report_location} &
+> ${report_location}
 
-echo "plotting histogram of all features"
-nohup python ${bash_directory}/all_features_histogram.py \
--db ${database_directory} \
--o ${output_directory} \
--p ${pulsemap} \
-> ${report_location} &
+#nohup python ${bash_directory}/reconstruction.py \
+#-db ${database_directory[@]} \
+#-o ${output_directory} \
+#-p ${pulsemap} \
+#> ${report_location}
