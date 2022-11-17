@@ -5,17 +5,17 @@ bash_directory=$(dirname -- "$(readlink -f "${BASH_SOURCE}")") # !do not alter!
 # Description: training the reconstruction of individual azimuth and zenith direction based on a sqlite3 database.
 #              This bash script only works with gpu;
 
-database_directory=/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/monte_carlo/11069/Level2_nugen_numu_IC86.2012.011069_InIcePulses_InIceDSTPulses_SplitInIcePulses_SplitInIceDSTPulses_SRTInIcePulses.db
-output_directory=/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/trained_models/Level2_nugen_numu_IC86_2012_011069/
+database_directory=/groups/icecube/petersen/GraphNetDatabaseRepository/Leon_MC_data/last_one_lvl3MC.db
+output_directory=/groups/icecube/petersen/GraphNetDatabaseRepository/multi_classification_stop_track_muon/trained_models_test/
 
 pulsemap=SplitInIcePulses
 
-gpu=0 # the gpu to use [0,1]
-batch_size=128
+gpu=1 # the gpu to use [0,1]
+batch_size=1024
 epochs=100
-workers=10
-event_numbers=50 # if number goes over available events; use all events
-run_name=Level2_nugen_numu_IC86_2012_11069
+workers=20
+event_numbers=5000 # if number goes over available events; use all events
+run_name=LeonMC_data
 
 # save the report file to 
 report_name=${run_name} # overwrites old, thus only keeps the one with error
@@ -28,7 +28,7 @@ mkdir -p ${report_directory};
 # save the report file to 
 report_location=${report_directory}${report_name}.out
 
-python ${bash_directory}/train_reconstruction_individual_azimuth_zenith.py \
+python ${bash_directory}/train_multiclass_classification_model.py \
 -db ${database_directory} \
 -o ${output_directory} \
 -n ${event_numbers} \

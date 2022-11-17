@@ -1,11 +1,15 @@
+from distutils.log import debug
+import logging
 import os
 
 from pytorch_lightning import Trainer
 from pytorch_lightning.callbacks import EarlyStopping
 from pytorch_lightning.loggers import WandbLogger
+
 import torch
 from torch.optim.adam import Adam
-from torch.nn.functional import one_hot
+from torch.nn.functional import one_hot, softmax
+
 
 from graphnet.training.loss_functions import CrossEntropyLoss
 from graphnet.data.constants import FEATURES, TRUTH
@@ -27,12 +31,18 @@ from graphnet.training.utils import (
 from graphnet.utilities.logging import get_logger
 
 import numpy as np
+import pandas as pd
+import csv
 
-def multiclass_transform(target, num_classes=3):
-    pid_transform = {1:0,12:2,13:1,14:2,16:2}
-    return one_hot(torch.tensor([pid_transform[np.abs(value)] for value in target]), num_classes)
+print('All is imported')
+
+#def multiclass_transform(target, num_classes=3):
+#    pid_transform = {1:0,12:2,13:1,14:2,16:2}
+#    return one_hot(torch.tensor([pid_transform[np.abs(value)] for value in target]), num_classes)
 
 logger = get_logger()
+# set increased verbose information when debugging.
+logger.setLevel(logging.DEBUG)
 
 # Configurations
 torch.multiprocessing.set_sharing_strategy("file_system")
@@ -54,7 +64,7 @@ wandb_logger = WandbLogger(
 )
 
 import argparse
-
+print('WandB initialized')
 
 parser = argparse.ArgumentParser(
     description="plotting the predicted zenith and azimuth vs truth."
@@ -74,7 +84,7 @@ parser.add_argument(
     dest="output",
     type=str,
     help="<required> the output path [str]",
-    default="/groups/icecube/petersen/GraphNetDatabaseRepository/multi_classification_stop_track_muon/trained_models/" ,
+    default="/groups/icecube/peter/storage/Multiclassification/Real" ,
     # required=True,
 )
 parser.add_argument(
@@ -92,7 +102,7 @@ parser.add_argument(
     dest="event_numbers",
     type=int,
     help="the number of muons to train on; if too high will take all available. [int]",
-    default=50,
+    default=int(7500000*3),
 )
 parser.add_argument(
     "-g",
@@ -100,7 +110,7 @@ parser.add_argument(
     dest="gpu",
     type=int,
     help="<required> the name for the model. [str]",
-    default=1# required=True,
+    default=0# required=True,
 )
 parser.add_argument(
     "-b",
@@ -108,7 +118,7 @@ parser.add_argument(
     dest="batch_size",
     type=int,
     help="<required> the name for the model. [str]",
-    default=1024,
+    default=512,
     # required=True,
 )
 parser.add_argument(
@@ -117,7 +127,7 @@ parser.add_argument(
     dest="epochs",
     type=int,
     help="<required> the name for the model. [str]",
-    default=10,
+    default=50,
     # required=True,
 )
 parser.add_argument(
@@ -126,7 +136,7 @@ parser.add_argument(
     dest="workers",
     type=int,
     help="<required> the number of cpu's to use. [str]",
-    default=1,
+    default=20,
     # required=True,
 )
 parser.add_argument(
@@ -135,7 +145,7 @@ parser.add_argument(
     dest="run_name",
     type=str,
     help="<required> the name for the model. [str]",
-    default="debug"
+    default="Real_run_21.5_mill_equal_frac_"
     # required=True,
 )
 parser.add_argument(
@@ -144,12 +154,13 @@ parser.add_argument(
     dest="accelerator",
     type=str,
     help="<required> the name for the model. [str]",
-    default="cpu"
+    default="gpu"
     # required=True,
 )
 
 args = parser.parse_args()
 
+print('Argparse done, defining main loop')
 # Main function definition
 def main():
 
@@ -163,24 +174,44 @@ def main():
         "batch_size": args.batch_size,
         "num_workers": args.workers,
         "accelerator": args.accelerator,
-        "devices": 1,#[args.gpu],
+        "devices": [args.gpu],#1
         "target": "pid",
         "n_epochs": args.epochs,
-        "patience": 5,
+        "patience": 15,
     }
     archive = args.output
     run_name = "dynedge_{}_".format(config["target"]) + args.run_name
-
+    print('before logs to wand')
     # Log configuration to W&B
     wandb_logger.experiment.config.update(config)
-
+    print('after logs to wand')
     # Common variables
     #train_selection, _ = get_equal_proportion_neutrino_indices(config["db"])
     #train_selection = train_selection[0:50000]
-    train_selection = get_desired_event_numbers(
-        config["db"], desired_size=args.event_numbers, fraction_muon=0.2, fraction_noise=0.2,fraction_nu_e=0.2,fraction_nu_tau=0.2,fraction_nu_mu=0.2
-    ) 
-    
+    print('before train_selection')
+    load_selection = False
+    load_selection_path = "/groups/icecube/peter/workspace/analyses/multi_classification_on_stop_and_track_muons/modelling/saved_selection"
+    if load_selection:
+        train_selection = pd.read_csv(load_selection_path)['selection'].values.tolist()
+
+    else:
+        train_selection = get_desired_event_numbers(
+            config["db"], desired_size=args.event_numbers, fraction_muon=float(1/3), fraction_noise=float(1/3),fraction_nu_e=float(1/9),fraction_nu_tau=float(1/9),fraction_nu_mu=float(1/9)
+        ) 
+    print('after train_selection')
+    save_selection = True
+    save_selection_path = "/groups/icecube/peter/workspace/analyses/multi_classification_on_stop_and_track_muons/modelling/saved_selection"
+    if save_selection:
+        
+        with open(save_selection_path, 'w') as f:
+
+        # using csv.writer method from CSV package
+            write = csv.writer(f)
+            write.writerow(['selection'])
+            for i in range(len(train_selection)):
+                write.writerow([train_selection[i]])
+
+    #print(train_selection)
 
     (
         training_dataloader,
@@ -204,10 +235,11 @@ def main():
         global_pooling_schemes=["min", "max", "mean", "sum"],
     )
     task = MulticlassClassificationTask(
-        #nb_inputs=3,
+        nb_classes=3,
         hidden_size=gnn.nb_outputs,
         target_labels=config["target"],
         loss_function=CrossEntropyLoss(),
+        transform_inference=lambda x: softmax(x,dim=-1),
     )
     model = StandardModel(
         detector=detector,
@@ -244,7 +276,7 @@ def main():
         max_epochs=config["n_epochs"],
         callbacks=callbacks,
         log_every_n_steps=1,
-        #logger=wandb_logger,
+        logger=wandb_logger,
     )
 
     try:
@@ -265,6 +297,8 @@ def main():
     save_results(config["db"], run_name, results, archive, model)
 
 
+
 # Main function call
 if __name__ == "__main__":
+    print('Before main loop')
     main()
