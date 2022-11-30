@@ -7,11 +7,10 @@ bash_directory=$(dirname -- "$(readlink -f "${BASH_SOURCE}")")
 # to recreate the results, follow the steps below.
 # (1) designate directory containing database; data described in folder.
 database_directory=(\
-/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/trained_models/dynedge_azimuth_example/results.csv \
-/groups/icecube/petersen/GraphNetDatabaseRepository/moon_pointing_analysis/trained_models/dynedge_zenith_example/results.csv \
+/groups/icecube/petersen/GraphNetDatabaseRepository/example_results/train_classification_model/last_one_lvl3MC/dynedge_pid_example/results.csv
 )
 # (2) designate the pulsemap used.
-pulsemap=TWSRTHVInIcePulses
+pulsemap=SplitInIcePulses
 # (3) specifically for the heatmap, define the number of bins.
 bins=500
 # (4) to run this shell script; copy file path and execute "bash <file_path>"

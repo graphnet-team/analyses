@@ -1,3 +1,21 @@
+def get_roc_and_auc(data, target):
+    fpr, tpr, _ = roc_curve(data[target], data[target+'_pred'])
+    auc_score = auc(fpr,tpr)
+    return fpr,tpr,auc_score 
+
+def plot_roc(data, target):#, save_dir, save_as_csv = False):
+    fpr, tpr, auc = get_roc_and_auc(data,  target)
+    
+    width = 3.176*2
+    height = 2.388*2
+    fig = plt.figure(figsize = (width,height))
+    plt.plot(fpr,tpr, label ='%s'%(round(auc,3)))
+    plt.legend()
+    plt.title('feature selection: 10^6')
+    plt.ylabel('True Positive Rate', fontsize = 12)
+    plt.xlabel('False Positive Rate', fontsize = 12)
+    return
+
 """script credit: Troels Christian Petersen"""
 
 import numpy as np
