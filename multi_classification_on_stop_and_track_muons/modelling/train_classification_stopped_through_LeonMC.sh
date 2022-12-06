@@ -18,9 +18,9 @@ epochs=100
 patience=10
 workers=10
 event_numbers=5000 #22000000 # if number goes over available events; use all events
-run_name=LeonMC_data_5k #22m
+run_name=LeonMC_90percentile_neutrino_data_stop_through #22m
 
-class_options="{0:0,1:1}"
+class_options="{0:-1,1:1}"
 target='stopped_muon'
 
 # save the report file to 

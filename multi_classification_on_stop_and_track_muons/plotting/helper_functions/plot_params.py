@@ -19,6 +19,8 @@ triple = (16, 4)
 buffer = 0.02
 
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+import matplotlib.colors as colors
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 plt.style.use("seaborn-white")
@@ -42,3 +44,21 @@ def colorbar(mappable):
     cbar = fig.colorbar(mappable, cax=cax)
     plt.sca(last_axes)
     return cbar
+
+class display(object):
+    """Display HTML representation of multiple objects in jupyter
+        Use as display('object1', 'object2', ...) """
+    template = """<div style="float: left; padding: 10px;">
+    <p style='font-family:"Courier New", Courier, monospace'>{0}</p>{1}
+    </div>"""
+
+    def __init__(self, *args):
+        self.args = args
+
+    def _repr_html_(self):
+        return '\n'.join(self.template.format(a, eval(a)._repr_html_())
+                     for a in self.args)
+
+    def __repr__(self):
+       return '\n\n'.join(a + '\n' + repr(eval(a))
+                       for a in self.args)

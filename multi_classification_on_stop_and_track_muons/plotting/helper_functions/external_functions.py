@@ -1,3 +1,17 @@
+def logit_transform(p, eps=1e-6, inverse=False):
+    if np.isnan(p):
+        return
+    p = p*(1-2*eps)+eps
+    try:
+        if inverse:
+            transform = np.exp(p) / (1 + np.exp(p))
+        else:
+            transform = np.log(p)- np.log(1 -p)
+    except ZeroDivisionError as e:
+        print(e)
+
+    return transform
+
 def get_roc_and_auc(data, target):
     fpr, tpr, _ = roc_curve(data[target], data[target+'_pred'])
     auc_score = auc(fpr,tpr)

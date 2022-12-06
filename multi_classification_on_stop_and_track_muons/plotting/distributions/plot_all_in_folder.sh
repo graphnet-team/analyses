@@ -11,10 +11,6 @@ database_directory=/groups/icecube/petersen/GraphNetDatabaseRepository/moon_poin
 pulsemap=TWSRTHVInIcePulses
 # (3) to run this shell script; copy file path and execute "bash <file_path>"
 
-sigma=2
-cutoff=0.7
-log=5000
-
 
 
 
