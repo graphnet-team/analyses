@@ -34,7 +34,7 @@ def deploy_models(input_files: List[str],
         """
     pulsemap = 'SplitInIcePulses_dynedge_v2_Pulses'
     model_dict = {}
-    model_dict['graphnet_dynedge_energy_reconstruction'] = {'model_path': '/data/ana/graphnet/upgrade/trained_models/ICRC2023_upgrade_event_selection/energy_reconstruction/dynedge_upgrade_reco_energy_SplitInIcePulses_dynedge_v2_Pulses_50e_p5_test_model.pth',
+    model_dict['graphnet_dynedge_energy_reconstruction'] = {'model_path': '/data/ana/graphnet/upgrade/trained_models/ICRC2023_upgrade_event_selection/energy_reconstruction/energy_reconstruction_updated.pth',
                                                             'prediction_columns': ['energy_pred'],
                                                             'pulsemap': pulsemap}
 
