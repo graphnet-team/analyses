@@ -2,6 +2,18 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.csv
+*.png
+*.pdf
+*.sh
+*.zst
+*.out
+*.err
+*.yaml
+*.ckpt
+*.json
+*.txt
+*.wandb
 
 # C extensions
 *.so
