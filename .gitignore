@@ -14,9 +14,8 @@ __pycache__/
 *.json
 *.txt
 *.wandb
-/groups/icecube/peter/workspace/analyses/Multiclassification_track_cascade_neutrinos/Outdated/modelling/wandb
-/groups/icecube/peter/workspace/analyses/Multiclassification_track_cascade_neutrinos/Outdated/modelling/lightning_logs
-
+/lightning_logs
+wandb
 
 # C extensions
 *.so
