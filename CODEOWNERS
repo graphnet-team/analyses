@@ -9,6 +9,6 @@ upgrade_neutrino_reconstruction/ @asogaard
 upgrade_nmo_sensitivity/ @asogaard
 upgrade_noise/ @asogaard
 moon_pointing_analysis/ @MortenHolmRep @Peterandresen12
-multi_classification_on_stop_and_track_muons/ @MortenHolmRep @Peterandresen12
+multiclassification_track_cascade_neutrinos/ @MortenHolmRep @Peterandresen12
 icedata/ @timephy
 northern_tracks/ @RasmusOrsoe @Peterandresen12 @Andreas-MJ
